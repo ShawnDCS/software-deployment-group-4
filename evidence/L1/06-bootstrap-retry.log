@@ -1,0 +1,14 @@
+== Retry bootstrap on vm2-test
+[vm2-test] Enable succeeded: 
+[vm2-test] [stdout]
+[vm2-test] host=vm2-test docker=29.9.3 compose=5.7.0 swap=2G tz=+08
+[vm2-test] [stderr]
+== deploy user (UID 1100) on vm2-test and vm3-prod
+[vm3-prod] Enable succeeded: 
+[vm3-prod] [stdout]
+[vm3-prod] host=vm3-prod deploy-user=uid=1100(deploy) gid=1100(deploy) groups=1100(deploy),998(docker) app-data=1001:1001
+[vm3-prod] [stderr]
+[vm2-test] Enable succeeded: 
+[vm2-test] [stdout]
+[vm2-test] host=vm2-test deploy-user=uid=1100(deploy) gid=1100(deploy) groups=1100(deploy),998(docker) app-data=1001:1001
+[vm2-test] [stderr]

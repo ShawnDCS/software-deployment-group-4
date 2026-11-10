@@ -1,0 +1,22 @@
+== Resource group rg-swe40006-g4 (koreacentral)
+Location      Name
+------------  --------------
+koreacentral  rg-swe40006-g4
+== VNet vnet-g4 10.40.0.0/16 / subnet snet-g4 10.40.1.0/24
+
+GitHub webhook ranges: 9.234.106.48/28 9.234.98.160/28 9.234.98.176/28 192.30.252.0/22 185.199.108.0/22 140.82.112.0/20 143.55.64.0/20 
+created NSG nsg-vm1-jenkins
+  rule Allow-SSH-Team: tcp/22 from 202.133.102.178/32
+  rule Allow-Jenkins-Team: tcp/8080 from 202.133.102.178/32
+  rule Allow-Jenkins-GitHub: tcp/8080 from 9.234.106.48/28 9.234.98.160/28 9.234.98.176/28 192.30.252.0/22 185.199.108.0/22 140.82.112.0/20 143.55.64.0/20
+created NSG nsg-vm2-test
+created NSG nsg-vm3-prod
+  rule Allow-SSH-Team: tcp/22 from 202.133.102.178/32
+  rule Allow-HTTP-Public: tcp/80 from Internet
+  rule Allow-Grafana-Public: tcp/3030 from Internet
+== Summary
+Nsg              Rules
+---------------  -------
+nsg-vm1-jenkins  3
+nsg-vm2-test     0
+nsg-vm3-prod     3

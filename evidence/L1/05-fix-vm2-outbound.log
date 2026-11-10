@@ -1,0 +1,6 @@
+== Enable default outbound access on subnet
+Subnet    DefaultOutboundAccess
+--------  -----------------------
+snet-g4   True
+== Deallocate + start vm2-test so the change applies
+vm2-test restarted

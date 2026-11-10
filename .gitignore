@@ -1,0 +1,22 @@
+# Secrets — never commit
+.env
+*.pem
+*.key
+id_rsa*
+*.pfx
+
+# Jenkins state
+jenkins_home/
+
+# Node
+node_modules/
+coverage/
+
+# Local runtime data (best-score file from local runs)
+app/data/
+data/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

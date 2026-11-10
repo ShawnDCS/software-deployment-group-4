@@ -1,0 +1,9 @@
+node_modules
+coverage
+data
+test
+jest.config.js
+Dockerfile
+.dockerignore
+*.log
+.env

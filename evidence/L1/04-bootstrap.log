@@ -1,0 +1,40 @@
+== Common bootstrap (Docker, swap, timezone) on all VMs in parallel
+[vm3-prod] Enable succeeded: 
+[vm3-prod] [stdout]
+[vm3-prod] host=vm3-prod docker=29.9.3 compose=5.7.0 swap=2G tz=+08
+[vm3-prod] 
+[vm3-prod] [stderr]
+[vm3-prod] 
+[vm2-test] Enable succeeded: 
+[vm2-test] [stdout]
+[vm2-test] 
+[vm2-test] [stderr]
+[vm2-test] W: Failed to fetch http://azure.archive.ubuntu.com/ubuntu/dists/jammy/InRelease  Could not connect to azure.archive.ubuntu.com:80 (20.196.152.132), connection timed out
+[vm2-test] W: Failed to fetch http://azure.archive.ubuntu.com/ubuntu/dists/jammy-updates/InRelease  Unable to connect to azure.archive.ubuntu.com:http:
+[vm2-test] W: Failed to fetch http://azure.archive.ubuntu.com/ubuntu/dists/jammy-backports/InRelease  Unable to connect to azure.archive.ubuntu.com:http:
+[vm2-test] W: Failed to fetch http://azure.archive.ubuntu.com/ubuntu/dists/jammy-security/InRelease  Unable to connect to azure.archive.ubuntu.com:http:
+[vm2-test] W: Some index files failed to download. They have been ignored, or old ones used instead.
+[vm2-test] E: Failed to fetch http://azure.archive.ubuntu.com/ubuntu/pool/main/libo/libonig/libonig5_6.9.7.1-2build1_amd64.deb  Could not connect to azure.archive.ubuntu.com:80 (20.196.152.132), connection timed out
+[vm2-test] E: Failed to fetch http://azure.archive.ubuntu.com/ubuntu/pool/main/j/jq/libjq1_1.6-2.1ubuntu3.2_amd64.deb  Unable to connect to azure.archive.ubuntu.com:http:
+[vm2-test] E: Failed to fetch http://azure.archive.ubuntu.com/ubuntu/pool/main/j/jq/jq_1.6-2.1ubuntu3.2_amd64.deb  Unable to connect to azure.archive.ubuntu.com:http:
+[vm2-test] E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+[vm2-test] 
+[vm1-jenkins] Enable succeeded: 
+[vm1-jenkins] [stdout]
+[vm1-jenkins] host=vm1-jenkins docker=29.9.3 compose=5.7.0 swap=2G tz=+08
+[vm1-jenkins] 
+[vm1-jenkins] [stderr]
+[vm1-jenkins] 
+== Deploy user + data dirs on test and prod
+[vm2-test] Enable succeeded: 
+[vm2-test] [stdout]
+[vm2-test] 
+[vm2-test] [stderr]
+[vm2-test] usermod: group 'docker' does not exist
+[vm2-test] 
+[vm3-prod] Enable succeeded: 
+[vm3-prod] [stdout]
+[vm3-prod] host=vm3-prod deploy-user=uid=1001(deploy) gid=1001(deploy) groups=1001(deploy),998(docker) app-data=1001:1001
+[vm3-prod] 
+[vm3-prod] [stderr]
+[vm3-prod] 

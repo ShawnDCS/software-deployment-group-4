@@ -1,0 +1,20 @@
+== Preflight for region: koreacentral
+-- 1. Azure login / subscription
+  [OK]   Subscription 'Azure for Students' is Enabled
+-- 2. Region policy (Azure for Students restricts locations)
+  [OK]   koreacentral is in the allowed-locations policy
+-- 3. Resource providers
+  [OK]   Microsoft.Compute Registered
+  [OK]   Microsoft.Network Registered
+-- 4. vCPU quota (need 6)
+  [OK]   Total Regional vCPUs: 0 used / 6 limit (6 free)
+  [OK]   Standard Basv2 Family vCPUs: 0 used / 10 limit (10 free)
+-- 5. Public IP quota (need 2)
+  [OK]   Public IPs: 0 used / 3 limit
+-- 6. VM sizes offered without restriction
+  [OK]   Standard_B2als_v2 available
+  [OK]   Standard_B2ats_v2 available
+-- 7. Ubuntu 22.04 LTS image
+  [OK]   Ubuntu 22.04 LTS gen2 image available (version 22.04.202610220)
+
+PREFLIGHT PASSED for koreacentral

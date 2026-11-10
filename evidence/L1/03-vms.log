@@ -1,0 +1,25 @@
+== Generating admin SSH key /Users/shawnraj/.ssh/swe40006_g4_ed25519 (private key stays on this laptop)
+== Creating vm1-jenkins (Standard_B2als_v2, 10.40.1.10)
+WARNING: Consider upgrading security for your workloads using Azure Trusted Launch VMs. To know more about Trusted Launch, please visit https://aka.ms/TrustedLaunch.
+Name         PrivateIp    PublicIp      Fqdn
+-----------  -----------  ------------  ---------------------------------------------------
+vm1-jenkins  10.40.1.10   20.41.96.186  swe40006-g4-jenkins.koreacentral.cloudapp.azure.com
+   auto-shutdown at 1500 UTC
+== Creating vm2-test (Standard_B2ats_v2, 10.40.1.20)
+WARNING: Consider upgrading security for your workloads using Azure Trusted Launch VMs. To know more about Trusted Launch, please visit https://aka.ms/TrustedLaunch.
+Name      PrivateIp    PublicIp    Fqdn
+--------  -----------  ----------  ------
+vm2-test  10.40.1.20
+   auto-shutdown at 1500 UTC
+== Creating vm3-prod (Standard_B2ats_v2, 10.40.1.30)
+WARNING: Consider upgrading security for your workloads using Azure Trusted Launch VMs. To know more about Trusted Launch, please visit https://aka.ms/TrustedLaunch.
+Name      PrivateIp    PublicIp        Fqdn
+--------  -----------  --------------  ------------------------------------------------
+vm3-prod  10.40.1.30   20.196.215.177  swe40006-g4-game.koreacentral.cloudapp.azure.com
+   auto-shutdown at 1500 UTC
+== Summary
+Name         Size               PrivateIp    PublicIp        Fqdn                                                 Power
+-----------  -----------------  -----------  --------------  ---------------------------------------------------  ----------
+vm1-jenkins  Standard_B2als_v2  10.40.1.10   20.41.96.186    swe40006-g4-jenkins.koreacentral.cloudapp.azure.com  VM running
+vm2-test     Standard_B2ats_v2  10.40.1.20                                                                        VM running
+vm3-prod     Standard_B2ats_v2  10.40.1.30   20.196.215.177  swe40006-g4-game.koreacentral.cloudapp.azure.com     VM running

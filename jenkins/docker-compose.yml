@@ -1,0 +1,18 @@
+# Runs Jenkins on VM1. Start with: cd /opt/jenkins && docker compose up -d --build
+services:
+  jenkins:
+    build: .
+    image: g4-jenkins:2.580.2
+    container_name: jenkins
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file: .env
+    # Join the host's docker group (GID differs per host) so Jenkins can use the socket.
+    group_add:
+      - "${DOCKER_GID:?set DOCKER_GID in .env}"
+    volumes:
+      - /var/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./secrets/deploy_ed25519:/run/secrets/deploy_ed25519:ro
+    mem_limit: 2g

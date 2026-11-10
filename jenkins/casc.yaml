@@ -1,0 +1,73 @@
+# Jenkins Configuration-as-Code. Values in ${...} come from environment variables
+# (the git-ignored /opt/jenkins/.env on VM1). Secrets are never written in this file.
+jenkins:
+  systemMessage: "SWE40006 Group 4 pipeline. Configured by jenkins/casc.yaml. UI changes are overwritten on restart."
+  numExecutors: 2
+  mode: NORMAL
+  slaveAgentPort: -1          # no inbound agents; builds run on the controller
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "${JENKINS_ADMIN_ID}"
+          password: "${JENKINS_ADMIN_PASSWORD}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  globalNodeProperties:
+    - envVars:
+        env:
+          - key: DOCKERHUB_USER
+            value: "${DOCKERHUB_USER}"
+          - key: TEST_HOST
+            value: "${TEST_HOST}"
+          - key: PROD_HOST
+            value: "${PROD_HOST}"
+          - key: PROD_PUBLIC_URL
+            value: "${PROD_PUBLIC_URL}"
+
+unclassified:
+  location:
+    url: "${JENKINS_URL}"
+  timestamper:
+    allPipelines: true
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: dockerhub
+              description: "Docker Hub push (access token, not password)"
+              username: "${DOCKERHUB_USER}"
+              password: "${DOCKERHUB_TOKEN:-not-set}"
+          - basicSSHUserPrivateKey:
+              scope: GLOBAL
+              id: deploy-ssh
+              description: "SSH key Jenkins uses to log in as deploy@VM2/VM3"
+              username: deploy
+              privateKeySource:
+                directEntry:
+                  privateKey: "${readFile:/run/secrets/deploy_ed25519}"
+
+jobs:
+  - script: |
+      pipelineJob('guessgame') {
+        description('Number Guessing Game: Checkout > Test > Build > Push > Deploy Test > Smoke Test > Deploy Prod > Verify')
+        properties {
+          githubProjectUrl('${GITHUB_REPO_URL}')
+        }
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote { url('${GITHUB_REPO_URL}.git') }
+                branch('*/main')
+              }
+            }
+            scriptPath('Jenkinsfile')
+            lightweight(true)
+          }
+        }
+      }

@@ -1,0 +1,20 @@
+== Preflight for region: southeastasia
+-- 1. Azure login / subscription
+  [OK]   Subscription 'Azure for Students' is Enabled
+-- 2. Region policy (Azure for Students often restricts locations)
+  [FAIL] southeastasia is NOT allowed by policy. Allowed regions:
+           centralindia
+           eastasia
+           indonesiacentral
+           koreacentral
+           uaenorth
+-- 3. Resource providers
+  [OK]   Microsoft.Compute Registered
+  [OK]   Microsoft.Network Registered
+-- 4. vCPU quota (need 5)
+  [OK]   Total Regional vCPUs: 0 used / 6 limit (6 free)
+  [FAIL] Standard BS Family vCPUs: 0 used / 4 limit (4 free, need 5)
+-- 5. Public IP quota (need 2)
+  [OK]   Public IPs: 0 used / 3 limit
+-- 6. VM size availability
+  [FAIL] Standard_B2s not offered in southeastasia

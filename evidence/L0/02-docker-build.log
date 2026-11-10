@@ -1,0 +1,111 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.31kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:22-alpine
+#2 ...
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:22-alpine
+#2 DONE 4.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 123B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 217.58kB done
+#5 DONE 0.0s
+
+#6 [1/8] FROM docker.io/library/node:22-alpine@sha256:0e1754758c2df4cfa3e68d59e2e1b7374bb7fd9ea6328eaaacf15cc934af8202
+#6 resolve docker.io/library/node:22-alpine@sha256:0e1754758c2df4cfa3e68d59e2e1b7374bb7fd9ea6328eaaacf15cc934af8202 done
+#6 sha256:1dc6fd1f45162852bd1358733a939386b2cc006e9ebd8445e7b26a596695c62e 0B / 1.26MB 0.2s
+#6 sha256:41077c84f34a6e22a9d699f265b902f60d6644b2ac82c04d45c50cefee2a6406 0B / 444B 0.2s
+#6 sha256:41077c84f34a6e22a9d699f265b902f60d6644b2ac82c04d45c50cefee2a6406 444B / 444B 0.3s done
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 0B / 55.68MB 0.2s
+#6 sha256:b90627b8f4292fd3cb63f0f27f0b11c37f04ba88ef3b78d4948ea0ace18c85e9 0B / 4.19MB 0.2s
+#6 sha256:1dc6fd1f45162852bd1358733a939386b2cc006e9ebd8445e7b26a596695c62e 1.26MB / 1.26MB 0.7s done
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 3.15MB / 55.68MB 1.2s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 6.29MB / 55.68MB 1.5s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 9.44MB / 55.68MB 2.0s
+#6 sha256:b90627b8f4292fd3cb63f0f27f0b11c37f04ba88ef3b78d4948ea0ace18c85e9 1.05MB / 4.19MB 1.8s
+#6 sha256:b90627b8f4292fd3cb63f0f27f0b11c37f04ba88ef3b78d4948ea0ace18c85e9 2.10MB / 4.19MB 2.1s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 12.58MB / 55.68MB 2.4s
+#6 sha256:b90627b8f4292fd3cb63f0f27f0b11c37f04ba88ef3b78d4948ea0ace18c85e9 3.15MB / 4.19MB 2.6s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 15.73MB / 55.68MB 2.9s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 18.87MB / 55.68MB 3.2s
+#6 sha256:b90627b8f4292fd3cb63f0f27f0b11c37f04ba88ef3b78d4948ea0ace18c85e9 4.19MB / 4.19MB 3.3s done
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 22.02MB / 55.68MB 3.5s
+#6 extracting sha256:b90627b8f4292fd3cb63f0f27f0b11c37f04ba88ef3b78d4948ea0ace18c85e9 0.1s done
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 26.21MB / 55.68MB 3.9s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 29.36MB / 55.68MB 4.4s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 32.51MB / 55.68MB 4.7s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 35.65MB / 55.68MB 5.1s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 38.80MB / 55.68MB 5.4s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 41.94MB / 55.68MB 5.6s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 46.14MB / 55.68MB 6.0s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 49.28MB / 55.68MB 6.3s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 52.43MB / 55.68MB 6.8s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 55.68MB / 55.68MB 7.1s
+#6 sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 55.68MB / 55.68MB 7.1s done
+#6 extracting sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69
+#6 extracting sha256:298bd28457cc53348790e429307e4c23baa2b2d1162f32164825847bbbe24a69 0.9s done
+#6 DONE 8.1s
+
+#6 [1/8] FROM docker.io/library/node:22-alpine@sha256:0e1754758c2df4cfa3e68d59e2e1b7374bb7fd9ea6328eaaacf15cc934af8202
+#6 extracting sha256:1dc6fd1f45162852bd1358733a939386b2cc006e9ebd8445e7b26a596695c62e 0.0s done
+#6 extracting sha256:41077c84f34a6e22a9d699f265b902f60d6644b2ac82c04d45c50cefee2a6406 done
+#6 DONE 8.1s
+
+#7 [2/8] WORKDIR /app
+#7 DONE 0.2s
+
+#8 [3/8] RUN addgroup -S -g 1001 appuser && adduser -S -u 1001 -G appuser appuser
+#8 DONE 0.1s
+
+#9 [4/8] COPY package.json package-lock.json ./
+#9 DONE 0.0s
+
+#10 [5/8] RUN npm ci --omit=dev && npm cache clean --force
+#10 1.131 npm warn deprecated prom-client@15.1.3: prom-client has been replaced by @prometheus-io/client
+#10 1.412 
+#10 1.412 added 69 packages, and audited 70 packages in 1s
+#10 1.412 
+#10 1.412 30 packages are looking for funding
+#10 1.412   run `npm fund` for details
+#10 1.413 
+#10 1.413 found 0 vulnerabilities
+#10 1.413 npm notice
+#10 1.413 npm notice New major version of npm available! 10.9.9 -> 12.2.2
+#10 1.413 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+#10 1.413 npm notice To update run: npm install -g npm@12.2.2
+#10 1.413 npm notice
+#10 1.525 npm warn using --force Recommended protections disabled.
+#10 DONE 1.7s
+
+#11 [6/8] COPY healthcheck.js ./
+#11 DONE 0.0s
+
+#12 [7/8] COPY src ./src
+#12 DONE 0.0s
+
+#13 [8/8] RUN mkdir -p /app/data && chown appuser:appuser /app/data
+#13 DONE 0.1s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 0.4s done
+#14 exporting manifest sha256:f72489d002d56de978c0b00306dd5e996b2d7b105f5176ee3b0c93415527f5c8 done
+#14 exporting config sha256:52f7566201bb0c8095abf6e014ad8c78495386ef076b419700d9a8d0f545f7d4 done
+#14 exporting attestation manifest sha256:549e01a21841cdee012eca33f407a60e81517862e291e0c1a339dbcec4da4aaf done
+#14 exporting manifest list sha256:d8419f42fb5be1056d7ad2214dd9e91702f68e80130f4290e8a8a0ab1b4863f3 done
+#14 naming to docker.io/library/guessgame:local done
+#14 unpacking to docker.io/library/guessgame:local
+#14 unpacking to docker.io/library/guessgame:local 1.3s done
+#14 DONE 1.7s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/n9g3am9xx5ysu19swgmluqrhi

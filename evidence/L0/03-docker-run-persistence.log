@@ -1,0 +1,39 @@
+== node version in image
+v22.23.4
+== run container #1 with bind mount
+4290e094bca82d8d4490e470e06e417b72d54df5b2d71e4a0ce12eca60f90c10
+== /health
+HTTP/1.1 200 OK
+OK
+== /api/score (before)
+{"bestScore":null}
+== play to a win with binary search
+guess 50 -> {"result":"too low","attempts":1,"remaining":9,"status":"playing"}
+guess 75 -> {"result":"too low","attempts":2,"remaining":8,"status":"playing"}
+guess 88 -> {"result":"too low","attempts":3,"remaining":7,"status":"playing"}
+guess 94 -> {"result":"correct","attempts":4,"remaining":6,"status":"won","bestScore":4,"isNewBest":true}
+== invalid guess (expect 400)
+400
+== scores.json on host
+{"bestScore":4,"updatedAt":"2026-11-10T03:03:10.681Z"}
+== footer
+  <footer id="deploy-footer">
+    <span>v1.0</span>·<span>Build #local-1</span>·<span>Commit: 0000000</span>·<span>Host: 4290e094bca8 (local)</span>
+  </footer>
+== recreate container
+== /api/score (after recreation)
+{"bestScore":4}
+== /metrics sample
+nodejs_heap_size_used_bytes 9279528
+http_requests_total{method="GET",route="/api/score",status="200"} 1
+== /stress?seconds=2 while polling /health
+OK 0.006707s
+OK 0.002344s
+OK 0.002207s
+OK: CPU stress ran for 2.0s (2327 fib(25) rounds)
+== docker health status after start-period
+healthy
+== graceful stop (SIGTERM)
+stopped in 0s
+guessgame listening on :3000 (dataDir=/app/data)
+SIGTERM received, closing server

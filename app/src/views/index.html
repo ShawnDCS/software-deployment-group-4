@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Number Guessing Game</title>
+  <style>
+    :root { --bg:#f6f7f9; --card:#fff; --ink:#1d2330; --muted:#5f6b7a; --accent:#2457d6; --ok:#1e8e4e; --bad:#c0392b; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:var(--bg); color:var(--ink);
+           min-height:100vh; display:flex; flex-direction:column; }
+    main { flex:1; display:flex; align-items:center; justify-content:center; padding:16px; }
+    .card { background:var(--card); border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,.08); padding:28px; width:100%; max-width:420px; }
+    h1 { margin:0 0 4px; font-size:1.5rem; }
+    .prompt { color:var(--muted); margin:0 0 20px; }
+    form { display:flex; gap:8px; }
+    input { flex:1; font-size:1.1rem; padding:10px 12px; border:1px solid #c9d0da; border-radius:8px; min-width:0; }
+    button { font-size:1rem; padding:10px 16px; border:0; border-radius:8px; background:var(--accent); color:#fff; cursor:pointer; }
+    button:disabled { opacity:.5; cursor:default; }
+    #new { width:100%; margin-bottom:16px; }
+    #message { min-height:1.5em; font-weight:600; margin:16px 0 8px; }
+    .ok { color:var(--ok); } .bad { color:var(--bad); }
+    .stats { display:flex; justify-content:space-between; color:var(--muted); font-size:.95rem; }
+    footer { text-align:center; font-size:.85rem; color:var(--muted); padding:12px 16px; border-top:1px solid #e3e7ec; background:var(--card); }
+    footer span { white-space:nowrap; margin:0 6px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="card">
+      <h1>Number Guessing Game</h1>
+      <p class="prompt" id="prompt">Guess a number between {{MIN}} and {{MAX}}. You have {{MAX_ATTEMPTS}} attempts.</p>
+      <button id="new" type="button">New Game</button>
+      <form id="guess-form">
+        <input id="guess" type="number" min="{{MIN}}" max="{{MAX}}" step="1" placeholder="Your guess" disabled required>
+        <button id="submit" type="submit" disabled>Guess</button>
+      </form>
+      <p id="message" role="status"></p>
+      <div class="stats">
+        <span>Attempts: <strong id="attempts">0</strong> / {{MAX_ATTEMPTS}}</span>
+        <span>Best score: <strong id="best">–</strong></span>
+      </div>
+    </div>
+  </main>
+  <footer id="deploy-footer">
+    <span>v{{VERSION}}</span>·<span>Build #{{BUILD_NUMBER}}</span>·<span>Commit: {{COMMIT}}</span>·<span>Host: {{HOSTNAME}} ({{COLOR}})</span>
+  </footer>
+  <script>
+    (function () {
+      var gameId = null;
+      var $ = function (id) { return document.getElementById(id); };
+
+      function say(text, cls) { $('message').textContent = text; $('message').className = cls || ''; }
+      function setPlaying(on) { $('guess').disabled = !on; $('submit').disabled = !on; if (on) $('guess').focus(); }
+
+      function post(url, body) {
+        return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) })
+          .then(function (r) { return r.json().then(function (data) { return { status: r.status, data: data }; }); });
+      }
+
+      function loadBest() {
+        fetch('/api/score').then(function (r) { return r.json(); }).then(function (d) {
+          $('best').textContent = d.bestScore === null ? '–' : d.bestScore;
+        }).catch(function () {});
+      }
+
+      $('new').addEventListener('click', function () {
+        post('/api/new').then(function (res) {
+          gameId = res.data.gameId;
+          $('attempts').textContent = '0';
+          say('New game started. Good luck!');
+          setPlaying(true);
+        }).catch(function () { say('Could not start a game.', 'bad'); });
+      });
+
+      $('guess-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var value = $('guess').value;
+        post('/api/guess', { gameId: gameId, guess: value === '' ? null : Number(value) }).then(function (res) {
+          var d = res.data;
+          if (res.status !== 200) { say(d.error || 'Invalid guess.', 'bad'); return; }
+          $('attempts').textContent = d.attempts;
+          $('guess').value = '';
+          if (d.result === 'correct') {
+            say('Correct! You got it in ' + d.attempts + ' attempt' + (d.attempts === 1 ? '' : 's') +
+                (d.isNewBest ? ' — new best score!' : '.'), 'ok');
+            setPlaying(false); loadBest();
+          } else if (d.status === 'lost' || d.result === 'game over') {
+            say('Game over!' + (d.secret ? ' The number was ' + d.secret + '.' : '') + ' Press New Game.', 'bad');
+            setPlaying(false);
+          } else {
+            say(d.result === 'too high' ? 'Too high ↓' : 'Too low ↑');
+            $('guess').focus();
+          }
+        }).catch(function () { say('Network error, try again.', 'bad'); });
+      });
+
+      loadBest();
+    })();
+  </script>
+</body>
+</html>
