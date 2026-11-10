@@ -1,7 +1,13 @@
 #!/bin/sh
-# deploy-prod.sh IMAGE BUILD COMMIT — runs on VM3 (prod) as `deploy`.
-# Level 3 version: simple stop-and-replace of the single production container behind Nginx.
-# (Upgraded to blue-green with rollback in Phase 5.)
+# deploy-prod.sh IMAGE BUILD COMMIT — BLUE-GREEN deploy on VM3 (prod), run as `deploy`.
+#  1. read the live colour from the state file; the new build goes to the OTHER colour
+#  2. start the new container on its own port (blue 3001 / green 3002)
+#  3. poll its /health up to 12 x 5 s
+#     - fail -> remove the new container, Nginx untouched, prod stays on the old build (rollback)
+#  4. rewrite Nginx's upstream file, nginx -t, graceful reload (no dropped connections)
+#  5. verify through Nginx that the new build is served; if not, switch back
+#  6. write state file, Grafana annotation, wait DRAIN_SECONDS (60) then stop the old container
+#     (stopped, not removed, so rollback.sh can restart it instantly)
 set -eu
 # shellcheck source=deploy/lib.sh
 command -v wait_healthy >/dev/null 2>&1 || . "$(dirname "$0")/lib.sh"
@@ -9,33 +15,57 @@ command -v wait_healthy >/dev/null 2>&1 || . "$(dirname "$0")/lib.sh"
 IMAGE=${1:?usage: deploy-prod.sh IMAGE BUILD COMMIT}
 BUILD=${2:?build}
 COMMIT=${3:?commit}
-COLOR=blue
-PORT=3001
-NAME=guessgame-$COLOR
-STATE=/var/lib/app-deploy/current-release
+DRAIN_SECONDS=${DRAIN_SECONDS:-60}
 
-log "Deploying $IMAGE (build $BUILD) to production as $COLOR"
-docker pull -q "$IMAGE"
-docker rm -f "$NAME" >/dev/null 2>&1 || true
-docker run -d --name "$NAME" --hostname "prod-$COLOR" --restart unless-stopped \
+OLD=$(current_color)
+OLD_BUILD=$(jq -r '.build // ""' "$STATE_FILE" 2>/dev/null || true)
+NEW=$(other_color "$OLD")
+PORT=$(port_of "$NEW")
+log "Live colour: $OLD (build ${OLD_BUILD:-none}). Starting $NEW container with build $BUILD..."
+
+if ! docker pull -q "$IMAGE"; then
+  docker image inspect "$IMAGE" >/dev/null 2>&1 || { log "Cannot pull $IMAGE and no local copy; production unchanged"; exit 1; }
+  log "Pull failed; using the local copy of $IMAGE"
+fi
+docker rm -f "guessgame-$NEW" >/dev/null 2>&1 || true
+docker run -d --name "guessgame-$NEW" --hostname "prod-$NEW" --restart unless-stopped \
   -p "127.0.0.1:$PORT:3000" \
   -v /var/lib/app-data:/app/data \
-  -e DEPLOY_COLOR="$COLOR" \
+  -e DEPLOY_COLOR="$NEW" \
   --memory 200m \
   "$IMAGE" >/dev/null
 
-if ! wait_healthy "http://127.0.0.1:$PORT/health"; then
-  docker logs --tail 50 "$NAME" || true
+if ! wait_healthy "http://127.0.0.1:$PORT/health" 12 5; then
+  docker logs --tail 30 "guessgame-$NEW" 2>&1 | sed 's/^/    | /' || true
+  docker rm -f "guessgame-$NEW" >/dev/null 2>&1 || true
+  annotate "ROLLBACK: build $BUILD failed health check, production stays on $OLD (build ${OLD_BUILD:-none})" rollback "build-$BUILD"
+  log "ROLLBACK: build $BUILD never became healthy. Nginx untouched; production still serves $OLD (build ${OLD_BUILD:-none})."
   exit 1
 fi
 
-sed "s/__COLOR__/$COLOR/; s/__BUILD__/$BUILD/; s/__PORT__/$PORT/" /etc/nginx/guessgame-upstream.conf.template \
-  | sudo /usr/bin/tee /etc/nginx/conf.d/guessgame-upstream.conf >/dev/null
-sudo /usr/sbin/nginx -t 2>/dev/null
-sudo /usr/sbin/nginx -s reload
-log "Nginx now routes to $COLOR (127.0.0.1:$PORT)"
+switch_upstream "$NEW" "$BUILD" || { docker rm -f "guessgame-$NEW" >/dev/null 2>&1; exit 1; }
 
-printf '{"color":"%s","build":"%s","commit":"%s","deployed_at":"%s"}\n' \
-  "$COLOR" "$BUILD" "$COMMIT" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$STATE"
+# Confirm Nginx really serves the new build before declaring success.
+served=""
+for _ in 1 2 3 4 5 6; do
+  if curl -fs -m 3 http://127.0.0.1/ | grep -q "Build #$BUILD<"; then served=yes; break; fi
+  sleep 1
+done
+if [ -z "$served" ]; then
+  log "Nginx is not serving build $BUILD; switching back to $OLD"
+  if [ "$OLD" != none ]; then switch_upstream "$OLD" "$OLD_BUILD" || true; fi
+  docker rm -f "guessgame-$NEW" >/dev/null 2>&1 || true
+  exit 1
+fi
+
+write_state "$NEW" "$BUILD" "$COMMIT" "$OLD" "$OLD_BUILD"
+annotate "Deployed build $BUILD ($COMMIT) to $NEW" "$NEW" "build-$BUILD"
+log "Production now on $NEW: $(cat "$STATE_FILE")"
+
+if [ "$OLD" != none ] && docker inspect "guessgame-$OLD" >/dev/null 2>&1; then
+  log "Draining $OLD for ${DRAIN_SECONDS}s before stopping it (kept for instant rollback)"
+  sleep "$DRAIN_SECONDS"
+  docker stop -t 10 "guessgame-$OLD" >/dev/null
+  log "Stopped guessgame-$OLD"
+fi
 prune_images
-log "Production deploy OK: $(cat "$STATE")"

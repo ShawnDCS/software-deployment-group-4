@@ -1,0 +1,43 @@
+===== TEST A: deliberately broken build -> automatic rollback =====
+built shawnraj07/guessgame:broken-demo (crashes on start)
+-- live before: Build #3 Host: prod-green (green) 
+[16:27:54] Live colour: green (build 3). Starting blue container with build 999...
+Error response from daemon: failed to resolve reference "docker.io/shawnraj07/guessgame:broken-demo": docker.io/shawnraj07/guessgame:broken-demo: not found
+[16:27:55] Pull failed; using the local copy of shawnraj07/guessgame:broken-demo
+[16:27:57] Waiting for http://127.0.0.1:3001/health (1/12)
+[16:28:02] Waiting for http://127.0.0.1:3001/health (2/12)
+[16:28:07] Waiting for http://127.0.0.1:3001/health (3/12)
+[16:28:12] Waiting for http://127.0.0.1:3001/health (4/12)
+[16:28:17] Waiting for http://127.0.0.1:3001/health (5/12)
+[16:28:22] Waiting for http://127.0.0.1:3001/health (6/12)
+[16:28:27] Waiting for http://127.0.0.1:3001/health (7/12)
+[16:28:32] Waiting for http://127.0.0.1:3001/health (8/12)
+[16:28:37] Waiting for http://127.0.0.1:3001/health (9/12)
+[16:28:42] Waiting for http://127.0.0.1:3001/health (10/12)
+[16:28:47] Waiting for http://127.0.0.1:3001/health (11/12)
+[16:28:52] Waiting for http://127.0.0.1:3001/health (12/12)
+[16:28:57] Health check FAILED after 12 attempts: http://127.0.0.1:3001/health
+    | /bin/sh: [node,: not found
+    | /bin/sh: [node,: not found
+    | /bin/sh: [node,: not found
+    | /bin/sh: [node,: not found
+    | /bin/sh: [node,: not found
+    | /bin/sh: [node,: not found
+    | /bin/sh: [node,: not found
+    | /bin/sh: [node,: not found
+    | /bin/sh: [node,: not found
+    | /bin/sh: [node,: not found
+[16:28:57] Grafana annotation added: ROLLBACK: build 999 failed health check, production stays on green (build 3)
+[16:28:57] ROLLBACK: build 999 never became healthy. Nginx untouched; production still serves green (build 3).
+deploy-prod exit code: 1
+-- live after: Build #3 Host: prod-green (green) 
+guessgame-green	shawnraj07/guessgame:3	Up 2 hours (healthy)
+state: {
+  "color": "green",
+  "build": "3",
+  "commit": "934e7d7",
+  "deployed_at": "2026-11-10T06:17:50Z",
+  "previous_color": "blue",
+  "previous_build": "3"
+}
+broken image removed

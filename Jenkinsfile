@@ -98,6 +98,8 @@ pipeline {
     }
 
     stage('Deploy Prod') {
+      // Blue-green: new colour starts beside the live one, is health-checked (12 x 5 s), then Nginx
+      // switches over. If the health check fails the script exits 1 and production is untouched.
       steps {
         sshagent(credentials: ['deploy-ssh']) {
           sh 'cat deploy/lib.sh deploy/deploy-prod.sh | ssh deploy@"$PROD_HOST" sh -s -- "$IMAGE:$BUILD_NUMBER" "$BUILD_NUMBER" "$GIT_SHORT"'
@@ -114,6 +116,9 @@ pipeline {
   }
 
   post {
+    failure {
+      echo "Pipeline FAILED. Production was not changed by this build (see the failed stage above)."
+    }
     success {
       echo "Live: ${env.PROD_PUBLIC_URL} (build #${env.BUILD_NUMBER}, commit ${env.GIT_SHORT})"
     }
