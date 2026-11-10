@@ -202,6 +202,7 @@ describe('Page, metrics, stress', () => {
     expect(res.text).toMatch(/http_requests_total\{method="GET",route="\/health",status="200"\} 1/);
     expect(res.text).toMatch(/http_requests_total\{method="GET",route="unmatched",status="404"\} 1/);
     expect(res.text).toContain('http_request_duration_seconds_bucket');
+    expect(res.text).toContain('app_info{version="1.0",build="7",commit="abc1234",color="blue"} 1');
   });
 
   test('GET /stress burns CPU in a worker and /health stays responsive', async () => {

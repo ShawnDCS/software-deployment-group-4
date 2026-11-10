@@ -1,0 +1,33 @@
+== Copy monitoring/ to VM3:/opt/monitoring
+Warning: Permanently added 'swe40006-g4-game.koreacentral.cloudapp.azure.com' (ED25519) to the list of known hosts.
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.xattr.com.apple.provenance'
+== Start the stack
+.env created (Grafana admin password generated on this VM)
+ Image grafana/grafana:13.2.5 Pulling 
+ Image prom/node-exporter:v1.12.1 Pulling 
+ Image ghcr.io/google/cadvisor:v0.60.6 Pulling 
+ Image prom/prometheus:v3.15.1 Pulling 
+ Image prom/node-exporter:v1.12.1 Pulled 
+ Image ghcr.io/google/cadvisor:v0.60.6 Pulled 
+ Image prom/prometheus:v3.15.1 Pulled 
+ Image grafana/grafana:13.2.5 Pulled 
+ Container grafana Starting 
+ Container node-exporter Starting 
+ Container prometheus Started 
+ Container cadvisor Started 
+ Container grafana Started 
+ Container node-exporter Started 
+== Wait for Prometheus targets
+cadvisor	up	
+guessgame	down	Get "http://host.docker.internal:80/metrics": dial tcp 172.17.0.1:80: connect: connection refused
+node	up	
+prometheus	up	
+== Grafana health
+== Container memory
+cadvisor	19.89MiB / 128MiB	0.00%
+prometheus	38.61MiB / 256MiB	0.25%
+grafana	179.9MiB / 200MiB	31.01%
+node-exporter	20.59MiB / 64MiB	0.00%
+               total        used        free      shared  buff/cache   available
+Mem:             891         376          72           3         442         357
+Swap:           2047         159        1888

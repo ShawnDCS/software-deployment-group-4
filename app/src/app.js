@@ -53,7 +53,7 @@ function createApp({
   const min = config.NUMBER_RANGE_MIN;
   const max = config.NUMBER_RANGE_MAX;
   const scores = createScoreStore(dataDir);
-  const metrics = createMetrics();
+  const metrics = createMetrics(buildInfo);
   const games = new Map(); // gameId -> game state (in memory, per brief §2.4.4)
   let latestGameId = null;
   let stressRunning = 0;

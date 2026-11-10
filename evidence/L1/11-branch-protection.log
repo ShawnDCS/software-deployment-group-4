@@ -1,0 +1,4 @@
+== protect main
+{"branch":"main","deletions":false,"dismiss_stale":true,"enforce_admins":false,"force_push":false,"required_approvals":1}
+== protect develop (no force-push / delete; PRs optional)
+{"branch":"develop","deletions":false,"force_push":false}

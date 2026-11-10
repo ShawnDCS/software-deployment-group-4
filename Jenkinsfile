@@ -1,7 +1,12 @@
 // SWE40006 Group 4 — Number Guessing Game pipeline.
-// Level 1 version: Checkout -> Test -> Build. Push / Deploy stages are added in Level 3.
+// Checkout -> Test -> Build -> Push -> Deploy Test -> Smoke Test -> Deploy Prod -> Verify
+// Any failing stage stops the pipeline, so a broken build never reaches production.
 pipeline {
   agent any
+
+  triggers {
+    githubPush()                   // Level 4: GitHub webhook on push to main starts a build
+  }
 
   options {
     skipDefaultCheckout()          // we check out explicitly in the 'Checkout' stage
@@ -12,7 +17,7 @@ pipeline {
   }
 
   environment {
-    IMAGE = "${env.DOCKERHUB_USER}/guessgame"   // DOCKERHUB_USER is a global env var set by JCasC
+    IMAGE = "${env.DOCKERHUB_USER}/guessgame"   // DOCKERHUB_USER, TEST_HOST, PROD_HOST, PROD_PUBLIC_URL come from JCasC
   }
 
   stages {
@@ -58,14 +63,63 @@ pipeline {
             --build-arg GIT_COMMIT="$GIT_COMMIT" \
             -t "$IMAGE:$BUILD_NUMBER" -t "$IMAGE:$GIT_SHORT" \
             app/
-          docker image ls "$IMAGE" --format '{{.Repository}}:{{.Tag}}  {{.Size}}' | head -4
         '''
+      }
+    }
+
+    stage('Push') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DH_USER', passwordVariable: 'DH_TOKEN')]) {
+          sh '''
+            echo "$DH_TOKEN" | docker login -u "$DH_USER" --password-stdin
+            docker push -q "$IMAGE:$BUILD_NUMBER"
+            docker push -q "$IMAGE:$GIT_SHORT"
+          '''
+        }
+      }
+      post {
+        always { sh 'docker logout >/dev/null 2>&1 || true' }   // don't leave the token on disk
+      }
+    }
+
+    stage('Deploy Test') {
+      steps {
+        sshagent(credentials: ['deploy-ssh']) {
+          sh 'cat deploy/lib.sh deploy/deploy-test.sh | ssh deploy@"$TEST_HOST" sh -s -- "$IMAGE:$BUILD_NUMBER"'
+        }
+      }
+    }
+
+    stage('Smoke Test') {
+      steps {
+        // Plays a real game against the test server (new game, guesses, win, score), not just /health.
+        sh 'sh deploy/smoke-test.sh "http://$TEST_HOST:3000" "$BUILD_NUMBER" full'
+      }
+    }
+
+    stage('Deploy Prod') {
+      steps {
+        sshagent(credentials: ['deploy-ssh']) {
+          sh 'cat deploy/lib.sh deploy/deploy-prod.sh | ssh deploy@"$PROD_HOST" sh -s -- "$IMAGE:$BUILD_NUMBER" "$BUILD_NUMBER" "$GIT_SHORT"'
+        }
+      }
+    }
+
+    stage('Verify') {
+      steps {
+        // Checks the PUBLIC URL through Nginx. Read-only mode never wins, so real best scores are safe.
+        sh 'sh deploy/smoke-test.sh "$PROD_PUBLIC_URL" "$BUILD_NUMBER" readonly'
       }
     }
   }
 
   post {
+    success {
+      echo "Live: ${env.PROD_PUBLIC_URL} (build #${env.BUILD_NUMBER}, commit ${env.GIT_SHORT})"
+    }
     always {
+      // Images are on Docker Hub now; drop local copies so VM1's disk doesn't fill up.
+      sh 'docker image rm "$IMAGE:$BUILD_NUMBER" "$IMAGE:$GIT_SHORT" >/dev/null 2>&1 || true'
       cleanWs()
     }
   }
