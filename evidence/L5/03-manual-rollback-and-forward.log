@@ -1,0 +1,28 @@
+===== TEST B: manual rollback and roll-forward =====
+-- live before: Build #4 Host: prod-blue (blue) 
+-- rollback.sh (blue build 4 -> green build 3)
+[16:38:05] Rolling back: blue (build 4) -> green (build 3)
+[16:38:06] Waiting for http://127.0.0.1:3002/health (1/12)
+[16:38:11] Health check passed (http://127.0.0.1:3002/health, attempt 2/12)
+[16:38:11] Switching Nginx to green (127.0.0.1:3002)... Reload complete.
+[16:38:11] Grafana annotation added: Manual rollback to build 3 (green)
+[16:38:22] Rollback complete: {"color":"green","build":"3","commit":"934e7d7","deployed_at":"2026-11-10T08:38:11Z","previous_color":"blue","previous_build":"4"}
+-- live now:    Build #3 Host: prod-green (green) 
+-- rollback.sh again (roll forward: green build 3 -> blue build 4)
+[16:38:24] Rolling back: green (build 3) -> blue (build 4)
+[16:38:24] Waiting for http://127.0.0.1:3001/health (1/12)
+[16:38:29] Health check passed (http://127.0.0.1:3001/health, attempt 2/12)
+[16:38:29] Switching Nginx to blue (127.0.0.1:3001)... Reload complete.
+[16:38:30] Grafana annotation added: Manual rollback to build 4 (blue)
+[16:38:40] Rollback complete: {"color":"blue","build":"4","commit":"04e698e","deployed_at":"2026-11-10T08:38:29Z","previous_color":"green","previous_build":"3"}
+-- live after:  Build #4 Host: prod-blue (blue) 
+-- zero-downtime loop (running on VM1 since before the L4 merge):
+loop still running
+failed requests: 0
+16:38:01 progress ok=900 failed=0
+failed requests: 0
+16:36:57 progress ok=600 failed=0
+16:38:01 progress ok=900 failed=0
+16:38:58
+failed requests: 0
+16:39:05 progress ok=1200 failed=0
