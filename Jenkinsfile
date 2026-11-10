@@ -18,8 +18,10 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        checkout scm
         script {
+          // With skipDefaultCheckout, GIT_COMMIT is not set automatically: take it from checkout's result.
+          def scmVars = checkout scm
+          env.GIT_COMMIT = scmVars.GIT_COMMIT
           env.GIT_SHORT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
           currentBuild.description = "commit ${env.GIT_SHORT}"
         }
