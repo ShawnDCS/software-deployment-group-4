@@ -1,0 +1,18 @@
+dashboard: Guessgame Production (uid=guessgame-prod, folder=SWE40006 Group 4)
+datasource: Prometheus -> http://prometheus:9090
+== sample queries
+node_memory_MemAvailable_bytes = 379359232
+jq: error: syntax error, unexpected IDENT, expecting $end (Unix shell quoting issues?) at <top-level>, line 1:
+.data.result[0].value[1] as $v | "100-avg(rate(node_cpu_seconds_total{mode="idle"}[1m]))*100 = \($v)"                                                                            
+jq: 1 compile error
+jq: error: syntax error, unexpected '+', expecting FORMAT or QQSTRING_START (Unix shell quoting issues?) at <top-level>, line 1:
+.data.result[0].value[1] as $v | "count(container_last_seen{name=~".+"}) = \($v)"                                                                    
+jq: 1 compile error
+== from the internet (laptop)
+Grafana http://swe40006-g4-game.koreacentral.cloudapp.azure.com:3030/login -> HTTP 000
+Prometheus :9090 from internet -> 000 (000 = blocked, good)
+100 - avg(rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100 = 16.72222222222244
+node_memory_MemAvailable_bytes                          = 364462080
+sum(rate(node_network_receive_bytes_total{device="eth0"}[1m])) = 43.62222222222222
+sum(rate(node_disk_written_bytes_total[1m]))            = 7063961.6
+count(container_last_seen{name=~".+"})                  = 5

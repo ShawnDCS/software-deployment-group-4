@@ -5,7 +5,7 @@
 
 const client = require('prom-client');
 
-function createMetrics() {
+function createMetrics(buildInfo = {}) {
   const register = new client.Registry();
   // Default Node.js metrics: CPU, memory, heap (nodejs_heap_size_used_bytes), event loop lag, GC...
   client.collectDefaultMetrics({ register });
@@ -24,6 +24,20 @@ function createMetrics() {
     buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30],
     registers: [register],
   });
+
+  // Constant gauge = 1 whose labels say which build is live (Grafana "Live build" panel).
+  const appInfo = new client.Gauge({
+    name: 'app_info',
+    help: 'Build information of the running game',
+    labelNames: ['version', 'build', 'commit', 'color'],
+    registers: [register],
+  });
+  appInfo.set({
+    version: String(buildInfo.version || 'unknown'),
+    build: String(buildInfo.buildNumber || 'unknown'),
+    commit: String(buildInfo.commit || 'unknown'),
+    color: String(buildInfo.color || 'unknown'),
+  }, 1);
 
   // Express middleware: time every request and label it by the matched route
   // (e.g. "/api/guess"), not the raw URL, so random paths can't explode label cardinality.

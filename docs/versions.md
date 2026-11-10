@@ -22,8 +22,8 @@ Never use `latest` — every image/package below is pinned.
 | Ubuntu Server | 22.04 LTS gen2 (image 22.04.202610220), region koreacentral |
 | Jenkins | `jenkins/jenkins:2.580.2-lts-jdk21` (current LTS; the jdk17 line stopped updating in March 2026). Plugins pinned in `jenkins/plugins.txt` |
 | Docker CLI inside Jenkins | `docker:29.9.3-cli` (static binary + buildx) |
-| Prometheus | TBD |
-| Grafana | TBD |
-| Node Exporter | TBD |
-| cAdvisor | TBD |
-| Nginx | TBD |
+| Prometheus | `prom/prometheus:v3.15.1` (3.16.0 was 5 days old; took latest patch of previous minor) |
+| Grafana | `grafana/grafana:13.2.5` (13.3.0 was a fresh .0 release) |
+| Node Exporter | `prom/node-exporter:v1.12.1` |
+| cAdvisor | `ghcr.io/google/cadvisor:v0.60.6` (images moved from gcr.io to ghcr.io) |
+| Nginx | 1.30.6 from the nginx.org stable apt repo, `apt-mark hold` (Ubuntu's own package is 1.18) |

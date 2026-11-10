@@ -79,6 +79,14 @@ describe('scoreStore.js', () => {
   });
 });
 
+describe('metrics.js', () => {
+  test('app_info falls back to "unknown" labels', async () => {
+    const { createMetrics } = require('../src/metrics');
+    const text = await createMetrics().register.metrics();
+    expect(text).toContain('app_info{version="unknown",build="unknown",commit="unknown",color="unknown"} 1');
+  });
+});
+
 describe('app.js', () => {
   test('createApp requires dataDir', () => {
     expect(() => createApp()).toThrow(/dataDir/);

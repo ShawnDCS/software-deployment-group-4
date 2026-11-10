@@ -17,7 +17,7 @@ SSH="ssh -i $SSH_KEY -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$
 echo "== 1. Copy jenkins/ to $VM1_FQDN:/opt/jenkins"
 # shellcheck disable=SC2016  # $USER is meant to expand on the remote side
 $SSH "$ADMIN_USER@$VM1_FQDN" 'sudo install -d -o "$USER" -g "$USER" /opt/jenkins'
-tar -C "$ROOT/jenkins" --exclude .env --exclude secrets -cf - . | $SSH "$ADMIN_USER@$VM1_FQDN" 'tar -C /opt/jenkins -xf -'
+COPYFILE_DISABLE=1 tar --no-xattrs -C "$ROOT/jenkins" --exclude .env --exclude secrets -cf - . | $SSH "$ADMIN_USER@$VM1_FQDN" 'tar -C /opt/jenkins -xf -'
 
 echo "== 2. Configure and start Jenkins on VM1"
 # Values are expanded locally; nothing secret is in this heredoc.

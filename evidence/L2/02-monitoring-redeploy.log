@@ -1,0 +1,19 @@
+cadvisor	up	
+guessgame	down	Get "http://host.docker.internal:80/metrics": dial tcp 172.17.0.1:80: connect: connection refused
+node	up	
+prometheus	up	
+== Grafana health
+{"database":"ok","version":"13.2.5","commit":"3ab9ef02dbcaf449e531f2367481a110c2b6c79c"}
+== Container memory
+grafana	186.4MiB / 256MiB	15.32%
+cadvisor	14.25MiB / 128MiB	0.00%
+prometheus	50.08MiB / 256MiB	0.29%
+node-exporter	15.7MiB / 64MiB	0.00%
+               total        used        free      shared  buff/cache   available
+Mem:             891         451          70           3         370         289
+Swap:           2047         225        1822
+{"database":"ok","version":"13.2.5","commit":"3ab9ef02dbcaf449e531f2367481a110c2b6c79c"}
+/grafana restarts=0 oom=false
+/prometheus restarts=0 oom=false
+/cadvisor restarts=0 oom=false
+/node-exporter restarts=0 oom=false

@@ -1,0 +1,16 @@
+/etc/sudoers.d/deploy-nginx: parsed OK
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+nginx 1.30.6 running; upstream: server 127.0.0.1:3001
+sudo rights for deploy:
+    (root) NOPASSWD: /usr/sbin/nginx -t, /usr/sbin/nginx -s reload, /usr/bin/tee /etc/nginx/conf.d/guessgame-upstream.conf
+== redeploy monitoring (Grafana sub-path)
+ Image prom/node-exporter:v1.12.1 Pulling 
+ Image prom/prometheus:v3.15.1 Pulling 
+ Image ghcr.io/google/cadvisor:v0.60.6 Pulling 
+ Image grafana/grafana:13.2.5 Pulling 
+ Image prom/node-exporter:v1.12.1 Pulled 
+ Image ghcr.io/google/cadvisor:v0.60.6 Pulled 
+ Image prom/prometheus:v3.15.1 Pulled 
+ Image grafana/grafana:13.2.5 Pulled 
+== Grafana health
+{"database":"ok","version":"13.2.5","commit":"3ab9ef02dbcaf449e531f2367481a110c2b6c79c"}
