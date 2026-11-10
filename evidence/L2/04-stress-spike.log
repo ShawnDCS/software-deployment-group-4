@@ -1,0 +1,21 @@
+== targets
+cadvisor	up
+guessgame	up
+node	up
+prometheus	up
+== CPU before:   2.8333333333284827
+== GET /stress?seconds=20 (public, through Nginx)
+OK: CPU stress ran for 20.1s (23133 fib(25) rounds)
+== CPU after stress (30s window):   34.63333333333139
+== peak container CPU% in last 2m:
+guessgame-blue  2.845203865192207
+== live build via app_info:
+1.0 3 1
+docker stats: guessgame-blue 0.30%
+node CPU (avg of 2 vCPU): 53.49999999999758%
+OK: CPU stress ran for 30.0s (34594 fib(25) rounds)
+docker stats: guessgame-blue 100.84%
+node CPU (avg of 2 vCPU): 51.133333333333816%
+OK: CPU stress ran for 30.0s (34277 fib(25) rounds)
+peak container CPU last 3m (Grafana panel query): guessgame-blue 100.42503500626427%
+peak node CPU last 3m: 39.40000000000106%
