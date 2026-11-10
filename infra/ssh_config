@@ -1,0 +1,18 @@
+# SSH shortcuts for the team. Usage:  ssh -F infra/ssh_config g4-jenkins   (or g4-prod, g4-test)
+# g4-test has no public IP, so it is reached by jumping through the Jenkins VM.
+Host g4-*
+  User azureuser
+  IdentityFile ~/.ssh/swe40006_g4_ed25519
+  UserKnownHostsFile ~/.ssh/known_hosts_swe40006
+  StrictHostKeyChecking accept-new
+  ServerAliveInterval 30
+
+Host g4-jenkins
+  HostName swe40006-g4-jenkins.koreacentral.cloudapp.azure.com
+
+Host g4-prod
+  HostName swe40006-g4-game.koreacentral.cloudapp.azure.com
+
+Host g4-test
+  HostName 10.40.1.20
+  ProxyJump g4-jenkins

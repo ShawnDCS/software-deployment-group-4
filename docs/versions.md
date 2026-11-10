@@ -20,7 +20,8 @@ Never use `latest` — every image/package below is pinned.
 | Component | Version |
 |---|---|
 | Ubuntu Server | 22.04 LTS gen2 (image 22.04.202610220), region koreacentral |
-| Jenkins | TBD (`jenkins/jenkins:<x>-lts-jdk17`) |
+| Jenkins | `jenkins/jenkins:2.580.2-lts-jdk21` (current LTS; the jdk17 line stopped updating in March 2026). Plugins pinned in `jenkins/plugins.txt` |
+| Docker CLI inside Jenkins | `docker:29.9.3-cli` (static binary + buildx) |
 | Prometheus | TBD |
 | Grafana | TBD |
 | Node Exporter | TBD |

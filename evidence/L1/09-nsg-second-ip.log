@@ -1,0 +1,3 @@
+nsg-vm1-jenkins Allow-SSH-Team 202.133.102.178/32,43.252.46.2/32
+nsg-vm1-jenkins Allow-Jenkins-Team 202.133.102.178/32,43.252.46.2/32
+nsg-vm3-prod Allow-SSH-Team 202.133.102.178/32,43.252.46.2/32

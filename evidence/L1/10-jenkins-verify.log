@@ -1,0 +1,13 @@
+== container
+jenkins g4-jenkins:2.580.2 Up About a minute
+== JCasC / errors in log
+2026-11-10 03:58:28.875+0000 [id=30]	INFO	hudson.lifecycle.Lifecycle#onReady: Jenkins is fully up and running
+== job + credentials on disk
+guessgame
+<id>dockerhub</id>
+<id>deploy-ssh</id>
+== docker from inside Jenkins
+client 29.9.3 / server 29.9.3
+== SSH from Jenkins to test + prod as deploy (strict host key checking)
+vm2-test: deploy docker=29.9.3
+vm3-prod: deploy docker=29.9.3
