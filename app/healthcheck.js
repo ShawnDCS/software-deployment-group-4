@@ -1,6 +1,6 @@
 'use strict';
 
-// Used by the Dockerfile HEALTHCHECK: exit 0 if GET /health returns 200 "OK", else exit 1.
+// Used by the Dockerfile HEALTHCHECK
 const http = require('http');
 
 const port = Number(process.env.PORT) || 3000;

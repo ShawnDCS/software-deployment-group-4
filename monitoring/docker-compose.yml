@@ -1,7 +1,4 @@
-# Production monitoring stack on VM3. Start: cd /opt/monitoring && docker compose up -d
-# Memory limits keep the whole stack under ~700 MB because VM3 has 1 GB RAM (+2 GB swap).
-# Only Grafana is published publicly (3030). Prometheus, Node Exporter and cAdvisor bind to
-# 127.0.0.1 on the host; Prometheus reaches them over the internal Docker network.
+# Production monitoring stack on VM3
 services:
   prometheus:
     image: prom/prometheus:v3.15.1
@@ -19,7 +16,7 @@ services:
     ports:
       - "127.0.0.1:9090:9090"
     extra_hosts:
-      - "host.docker.internal:host-gateway"   # lets Prometheus reach Nginx on the host
+      - "host.docker.internal:host-gateway"
     mem_limit: 256m
 
   grafana:

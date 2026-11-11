@@ -1,8 +1,6 @@
 'use strict';
 
-// CPU stress for the Grafana demo. Runs in a worker thread so the main event loop
-// keeps answering /health while the CPU is pegged — otherwise a /stress call during
-// a deploy would make health checks fail.
+// CPU stress for the Grafana demo
 
 const { Worker } = require('worker_threads');
 

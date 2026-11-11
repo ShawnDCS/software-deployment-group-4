@@ -1,12 +1,5 @@
 #!/bin/sh
-# 01-network.sh — resource group, VNet/subnet and one NSG (firewall) per VM.
-# Cost: free (VNets and NSGs have no charge). Safe to re-run: az create commands are idempotent.
-#
-# Firewall design:
-#   nsg-vm1-jenkins : 22 from team IPs; 8080 from team IPs + GitHub webhook ranges
-#   nsg-vm2-test    : no internet inbound at all (VM2 has no public IP; Jenkins reaches it privately)
-#   nsg-vm3-prod    : 22 from team IPs; 80 + 443 (game, HTTPS) and 3030 (Grafana) from anywhere
-# Traffic inside the VNet is allowed by Azure's default rule, so Jenkins -> VM2/VM3 SSH works.
+# 01-network.sh: resource group, VNet, subnet and one NSG per VM
 set -eu
 # shellcheck source=infra/config.sh
 . "$(dirname "$0")/config.sh"
@@ -17,18 +10,16 @@ az group create -n "$RESOURCE_GROUP" -l "$LOCATION" --tags project=swe40006 grou
 echo "== VNet $VNET_NAME $VNET_PREFIX / subnet $SUBNET_NAME $SUBNET_PREFIX"
 az network vnet create -g "$RESOURCE_GROUP" -n "$VNET_NAME" --address-prefixes "$VNET_PREFIX" \
   --subnet-name "$SUBNET_NAME" --subnet-prefixes "$SUBNET_PREFIX" -o table
-# New Azure VNets are private by default (no outbound internet for VMs without a public IP).
-# VM2 has no public IP but must reach apt/Docker Hub, so allow default outbound on this subnet.
-# Free; the alternative (NAT gateway) costs ~$32/month.
+# New Azure VNets are private by default (no outbound internet for VMs without a public IP)
 az network vnet subnet update -g "$RESOURCE_GROUP" --vnet-name "$VNET_NAME" -n "$SUBNET_NAME" \
   --default-outbound-access true --query "{subnet:name, defaultOutboundAccess:defaultOutboundAccess}" -o table
 
-# GitHub publishes the IP ranges its webhooks come from. IPv4 only (our VMs have IPv4 public IPs).
+# GitHub publishes the IP ranges its webhooks come from
 GITHUB_HOOK_IPS=$(gh api meta --jq '.hooks[]' | grep -v ':' | tr '\n' ' ')
 echo "GitHub webhook ranges: $GITHUB_HOOK_IPS"
 
 nsg() { az network nsg create -g "$RESOURCE_GROUP" -n "$1" -o none; echo "created NSG $1"; }
-# rule NSG NAME PRIORITY PORT SOURCES...
+# rule NSG NAME PRIORITY PORT SOURCES
 rule() {
   n=$1; name=$2; prio=$3; port=$4; shift 4
   az network nsg rule create -g "$RESOURCE_GROUP" --nsg-name "$n" -n "$name" --priority "$prio" \
@@ -45,7 +36,7 @@ rule nsg-vm1-jenkins Allow-Jenkins-Team    110 8080 $TEAM_IPS
 # shellcheck disable=SC2086
 rule nsg-vm1-jenkins Allow-Jenkins-GitHub  120 8080 $GITHUB_HOOK_IPS
 
-nsg nsg-vm2-test   # intentionally no inbound rules from the internet
+nsg nsg-vm2-test
 
 nsg nsg-vm3-prod
 # shellcheck disable=SC2086

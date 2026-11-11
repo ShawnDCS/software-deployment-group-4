@@ -1,5 +1,4 @@
-# Number Guessing Game — production image.
-# Build: docker build --build-arg BUILD_NUMBER=47 --build-arg GIT_COMMIT=$(git rev-parse HEAD) -t guessgame app/
+# Number Guessing Game
 FROM node:22-alpine
 
 ENV NODE_ENV=production \
@@ -9,10 +8,9 @@ ENV NODE_ENV=production \
 WORKDIR /app
 
 # Non-root user with a FIXED uid/gid (1001) so the host dir /var/lib/app-data
-# can be chown'd to match: `sudo chown 1001:1001 /var/lib/app-data`.
 RUN addgroup -S -g 1001 appuser && adduser -S -u 1001 -G appuser appuser
 
-# Dependencies first so this layer is cached when only source code changes.
+# Dependencies first so this layer is cached when only source code changes
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
@@ -20,7 +18,7 @@ COPY healthcheck.js ./
 COPY src ./src
 RUN mkdir -p /app/data && chown appuser:appuser /app/data
 
-# Build metadata shown in the page footer. Set late so the layers above stay cached.
+# Build metadata shown in the page footer
 ARG BUILD_NUMBER=dev
 ARG GIT_COMMIT=local
 ENV BUILD_NUMBER=$BUILD_NUMBER \

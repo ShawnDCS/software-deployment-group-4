@@ -1,8 +1,5 @@
 #!/bin/sh
-# rollback.sh — manual instant rollback on VM3: restart the previous colour's (stopped)
-# container, health-check it, switch Nginx back, update the state file.
-# Usage (on VM3 as deploy):  sh rollback.sh      or from a laptop:
-#   cat deploy/lib.sh deploy/rollback.sh | ssh -F infra/ssh_config g4-prod sudo -u deploy sh -s
+# rollback.sh: switch prod back to the previous colour
 set -eu
 # shellcheck source=deploy/lib.sh
 command -v wait_healthy >/dev/null 2>&1 || . "$(dirname "$0")/lib.sh"

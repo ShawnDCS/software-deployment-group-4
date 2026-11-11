@@ -1,13 +1,5 @@
 #!/bin/sh
-# deploy-prod.sh IMAGE BUILD COMMIT — BLUE-GREEN deploy on VM3 (prod), run as `deploy`.
-#  1. read the live colour from the state file; the new build goes to the OTHER colour
-#  2. start the new container on its own port (blue 3001 / green 3002)
-#  3. poll its /health up to 12 x 5 s
-#     - fail -> remove the new container, Nginx untouched, prod stays on the old build (rollback)
-#  4. rewrite Nginx's upstream file, nginx -t, graceful reload (no dropped connections)
-#  5. verify through Nginx that the new build is served; if not, switch back
-#  6. write state file, Grafana annotation, wait DRAIN_SECONDS (60) then stop the old container
-#     (stopped, not removed, so rollback.sh can restart it instantly)
+# deploy-prod.sh IMAGE BUILD COMMIT: blue-green deploy on VM3
 set -eu
 # shellcheck source=deploy/lib.sh
 command -v wait_healthy >/dev/null 2>&1 || . "$(dirname "$0")/lib.sh"
@@ -45,7 +37,7 @@ fi
 
 switch_upstream "$NEW" "$BUILD" || { docker rm -f "guessgame-$NEW" >/dev/null 2>&1; exit 1; }
 
-# Confirm Nginx really serves the new build before declaring success.
+# Confirm Nginx really serves the new build before declaring success
 served=""
 for _ in 1 2 3 4 5 6; do
   if curl -fs -m 3 http://127.0.0.1/ | grep -q "Build #$BUILD<"; then served=yes; break; fi

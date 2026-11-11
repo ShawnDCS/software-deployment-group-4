@@ -1,9 +1,5 @@
 #!/bin/sh
 # smoke-test.sh BASE_URL EXPECTED_BUILD [full|readonly]
-# Checks the deployed game really works, not just /health:
-#   health, page + footer shows the expected build, new game, invalid guess -> 400, score endpoint.
-#   full     (test server): also plays a whole game to a win with binary search (writes best score).
-#   readonly (production):  never wins, so it can't overwrite players' real best score.
 set -eu
 BASE=${1:?usage: smoke-test.sh BASE_URL EXPECTED_BUILD [full|readonly]}
 BUILD=${2:?expected build number}
@@ -12,7 +8,7 @@ fails=0
 
 pass() { printf '  PASS  %s\n' "$1"; }
 fail() { printf '  FAIL  %s\n' "$1"; fails=$((fails + 1)); }
-json_field() { sed -n "s/.*\"$1\":\"\{0,1\}\([^,\"}]*\).*/\1/p"; }   # tiny JSON reader (no jq needed)
+json_field() { sed -n "s/.*\"$1\":\"\{0,1\}\([^,\"}]*\).*/\1/p"; }
 post() { curl -fs -m 10 -X POST -H 'Content-Type: application/json' -d "$2" "$BASE$1"; }
 
 echo "Smoke test: $BASE (expect build #$BUILD, mode=$MODE)"

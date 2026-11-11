@@ -1,9 +1,5 @@
 #!/bin/sh
-# 00-preflight.sh — READ-ONLY checks before creating any Azure resources.
-# Verifies: logged in, subscription enabled, region allowed by policy, providers,
-# vCPU / public IP quota, VM sizes offered, Ubuntu 22.04 image.
-#
-# Usage: sh infra/00-preflight.sh            (settings come from infra/config.sh)
+# 00-preflight.sh: read-only Azure checks before creating anything
 set -eu
 
 # shellcheck source=infra/config.sh
@@ -67,7 +63,7 @@ else
 fi
 
 echo "-- 6. VM sizes offered without restriction"
-# One list-skus call (it is slow), then check each size against the result.
+# One list-skus call (it is slow), then check each size against the result
 offered=$(az vm list-skus -l "$LOCATION" --resource-type virtualMachines --size Standard_B2 \
   --query "[?length(restrictions)==\`0\`].name" -o tsv)
 for size in $(printf '%s\n' "$VM1_SIZE" "$VM2_SIZE" "$VM3_SIZE" | sort -u); do

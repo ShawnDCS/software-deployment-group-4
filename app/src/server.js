@@ -1,8 +1,6 @@
 'use strict';
 
-// Entrypoint: reads env, starts listening, shuts down cleanly on SIGTERM
-// (docker stop sends SIGTERM — without a handler Node as PID 1 would ignore it
-// and Docker would SIGKILL after 10 s, cutting off in-flight requests).
+// Entrypoint
 
 const path = require('path');
 const { createApp } = require('./app');

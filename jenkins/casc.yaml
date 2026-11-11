@@ -1,10 +1,9 @@
-# Jenkins Configuration-as-Code. Values in ${...} come from environment variables
-# (the git-ignored /opt/jenkins/.env on VM1). Secrets are never written in this file.
+# Jenkins Configuration-as-Code
 jenkins:
   systemMessage: "SWE40006 Group 4 pipeline. Configured by jenkins/casc.yaml. UI changes are overwritten on restart."
   numExecutors: 2
   mode: NORMAL
-  slaveAgentPort: -1          # no inbound agents; builds run on the controller
+  slaveAgentPort: -1
   securityRealm:
     local:
       allowsSignup: false

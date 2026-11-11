@@ -1,15 +1,13 @@
-# Custom Jenkins image: official LTS + Docker CLI + our plugins + JCasC config baked in.
-# Rebuilding this image reproduces the whole Jenkins setup — no clicking in the UI.
+# Custom Jenkins image
 FROM jenkins/jenkins:2.580.2-lts-jdk21
 
 USER root
-# Docker CLI (static binary) and buildx plugin, copied from the official pinned docker CLI image.
-# Jenkins talks to the HOST's Docker daemon through the mounted /var/run/docker.sock.
+# Docker CLI and buildx plugin from the official docker CLI image
 COPY --from=docker:29.9.3-cli /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=docker:29.9.3-cli /usr/local/libexec/docker/cli-plugins/docker-buildx /usr/local/libexec/docker/cli-plugins/docker-buildx
 USER jenkins
 
-# Skip the setup wizard: security + admin user come from casc.yaml instead.
+# Skip the setup wizard
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Xmx1g" \
     CASC_JENKINS_CONFIG=/usr/share/jenkins/casc.yaml
 

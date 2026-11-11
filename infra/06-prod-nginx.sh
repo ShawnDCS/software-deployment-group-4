@@ -1,6 +1,5 @@
 #!/bin/sh
-# 06-prod-nginx.sh — install Nginx (nginx.org stable, pinned) on VM3 and the narrow sudo rule
-# that lets the `deploy` user switch the live upstream. Run from the laptop.
+# 06-prod-nginx.sh: install Nginx on VM3
 set -eu
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 SSHC="$ROOT/infra/ssh_config"
@@ -27,14 +26,14 @@ install -d /etc/nginx/snippets /var/www/certbot
 install -m 644 /tmp/nginx-src/guessgame-locations.conf /etc/nginx/snippets/guessgame-locations.conf
 install -m 644 /tmp/nginx-src/guessgame.conf /etc/nginx/conf.d/guessgame.conf
 install -m 644 /tmp/nginx-src/guessgame-upstream.conf.template /etc/nginx/guessgame-upstream.conf.template
-# Initial upstream: blue (port 3001). Only created if no deploy has written one yet.
+# Initial upstream: blue (port 3001)
 if [ ! -f /etc/nginx/conf.d/guessgame-upstream.conf ]; then
   sed 's/__COLOR__/blue/; s/__BUILD__/none/; s/__PORT__/3001/' /etc/nginx/guessgame-upstream.conf.template \
     > /etc/nginx/conf.d/guessgame-upstream.conf
 fi
 rm -rf /tmp/nginx-src
 
-# deploy may ONLY: test the config, reload, and overwrite the upstream file (via tee).
+# deploy may only test/reload Nginx and write the upstream file
 cat > /etc/sudoers.d/deploy-nginx <<'SUDO'
 deploy ALL=(root) NOPASSWD: /usr/sbin/nginx -t, /usr/sbin/nginx -s reload, /usr/bin/tee /etc/nginx/conf.d/guessgame-upstream.conf
 SUDO

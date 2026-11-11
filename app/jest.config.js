@@ -1,6 +1,6 @@
 'use strict';
 
-// Coverage is always collected; the build fails if any metric drops below 80%.
+// Coverage is always collected
 module.exports = {
   testEnvironment: 'node',
   collectCoverage: true,

@@ -1,10 +1,5 @@
 #!/bin/sh
-# 04-jenkins.sh — installs Jenkins (JCasC) on VM1 and lets it SSH to VM2/VM3 as `deploy`.
-# Run from the laptop:  sh infra/04-jenkins.sh
-#  1. copy jenkins/ to VM1:/opt/jenkins
-#  2. on VM1: create .env (random admin password generated ON the VM, never printed),
-#     generate the deploy SSH key ON the VM, record VM2/VM3 host keys, docker compose up
-#  3. install the deploy public key on VM2/VM3 via az run-command (VM2 has no public IP)
+# 04-jenkins.sh: install Jenkins on VM1 and give it SSH access to test and prod
 set -eu
 # shellcheck source=infra/config.sh
 . "$(dirname "$0")/config.sh"
@@ -15,12 +10,12 @@ VM3_FQDN=$(az vm show -d -g "$RESOURCE_GROUP" -n "$VM3_NAME" --query fqdns -o ts
 SSH="ssh -i $SSH_KEY -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$HOME/.ssh/known_hosts_swe40006"
 
 echo "== 1. Copy jenkins/ to $VM1_FQDN:/opt/jenkins"
-# shellcheck disable=SC2016  # $USER is meant to expand on the remote side
+# shellcheck disable=SC2016
 $SSH "$ADMIN_USER@$VM1_FQDN" 'sudo install -d -o "$USER" -g "$USER" /opt/jenkins'
 COPYFILE_DISABLE=1 tar --no-xattrs -C "$ROOT/jenkins" --exclude .env --exclude secrets -cf - . | $SSH "$ADMIN_USER@$VM1_FQDN" 'tar -C /opt/jenkins -xf -'
 
 echo "== 2. Configure and start Jenkins on VM1"
-# Values are expanded locally; nothing secret is in this heredoc.
+# Values are expanded locally
 $SSH "$ADMIN_USER@$VM1_FQDN" sh -s <<REMOTE
 set -eu
 cd /opt/jenkins
@@ -40,14 +35,14 @@ PROD_PUBLIC_URL=http://$VM3_FQDN
 ENV
   echo ".env created (admin password generated on this VM)"
 fi
-# Deploy key: generated here, private half never leaves VM1. Owned by the jenkins uid (1000).
+# Deploy key
 install -d -m 700 secrets
 if [ ! -f secrets/deploy_ed25519 ]; then
   ssh-keygen -q -t ed25519 -N "" -C "jenkins-deploy@vm1" -f secrets/deploy_ed25519
 fi
 sudo chown 1000:1000 secrets/deploy_ed25519
 sudo chmod 400 secrets/deploy_ed25519
-# Jenkins home + known_hosts for VM2/VM3 so SSH uses strict host key checking (no MITM).
+# Jenkins home + known_hosts for VM2/VM3 so SSH uses strict host key checking (no MITM)
 sudo install -d -o 1000 -g 1000 /var/jenkins_home /var/jenkins_home/.ssh
 ssh-keyscan -t ed25519 $VM2_IP $VM3_IP 2>/dev/null | sudo tee /var/jenkins_home/.ssh/known_hosts >/dev/null
 sudo chown 1000:1000 /var/jenkins_home/.ssh/known_hosts

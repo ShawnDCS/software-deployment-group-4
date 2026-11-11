@@ -1,7 +1,5 @@
 #!/bin/sh
-# jenkins-build.sh [wait-only] — trigger the guessgame job (or just wait for the next build),
-# wait for it to finish, and print its console log. Runs the API calls ON VM1 so the
-# admin password never leaves the server.  Usage: sh infra/jenkins-build.sh [wait]
+# jenkins-build.sh [wait]: trigger the Jenkins job and print its log
 set -eu
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 ssh -F "$ROOT/infra/ssh_config" g4-jenkins sh -s "${1:-trigger}" <<'REMOTE'

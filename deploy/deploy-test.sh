@@ -1,6 +1,5 @@
 #!/bin/sh
-# deploy-test.sh IMAGE — runs on VM2 (test) as `deploy`. Replaces the test container.
-# Usage (from Jenkins): cat deploy/lib.sh deploy/deploy-test.sh | ssh deploy@VM2 sh -s -- IMAGE
+# deploy-test.sh IMAGE: replace the test container on VM2
 set -eu
 # shellcheck source=deploy/lib.sh
 command -v wait_healthy >/dev/null 2>&1 || . "$(dirname "$0")/lib.sh"

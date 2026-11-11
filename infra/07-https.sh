@@ -1,13 +1,5 @@
 #!/bin/sh
-# 07-https.sh — HTTPS for the public game URL with a free Let's Encrypt certificate.
-# Why: browsers and chat apps try https:// first; with port 443 closed they hang ~8 s before
-# falling back to http (problem log #24). Run from the laptop: sh infra/07-https.sh
-#  1. open 443 on VM3's NSG
-#  2. (re)install the Nginx config (shared locations snippet + ACME challenge path)
-#  3. certbot (snap) obtains the certificate via the webroot challenge; renewal is automatic
-#     (systemd timer) and reloads Nginx through a deploy hook
-#  4. install the HTTPS server block: 443 + redirect http://<name> -> https://<name>
-#  5. Jenkins' Verify stage and Grafana's links switch to https
+# 07-https.sh: Let's Encrypt certificate and HTTPS for the game
 set -eu
 # shellcheck source=infra/config.sh
 . "$(dirname "$0")/config.sh"
@@ -34,7 +26,7 @@ if ! command -v certbot >/dev/null 2>&1; then
   ln -sf /snap/bin/certbot /usr/bin/certbot
 fi
 if [ ! -f "/etc/letsencrypt/live/$FQDN/fullchain.pem" ]; then
-  # No email registered on purpose (no personal data); Let's Encrypt no longer sends expiry mail anyway.
+  # No email registered on purpose (no personal data)
   certbot certonly --webroot -w /var/www/certbot -d "$FQDN" \
     --non-interactive --agree-tos --register-unsafely-without-email 2>&1 | grep -E 'Successfully|Certificate is saved|expires|error|Error' || true
 fi

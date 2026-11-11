@@ -1,7 +1,6 @@
 'use strict';
 
-// createApp() builds the Express app but never calls listen() — server.js does that.
-// This lets the tests spin up as many isolated apps as they like with supertest.
+// createApp() builds the Express app but never calls listen()
 
 const crypto = require('crypto');
 const fs = require('fs');
@@ -28,8 +27,7 @@ function escapeHtml(value) {
   }[c]));
 }
 
-// Footer info. Build number / commit are baked into the image as env vars by the
-// Dockerfile; DEPLOY_COLOR is set by the deploy script at `docker run` time.
+// Footer info
 function buildInfoFromEnv(config, env = process.env) {
   return {
     version: env.APP_VERSION || config.VERSION,
@@ -54,7 +52,7 @@ function createApp({
   const max = config.NUMBER_RANGE_MAX;
   const scores = createScoreStore(dataDir);
   const metrics = createMetrics(buildInfo);
-  const games = new Map(); // gameId -> game state (in memory, per brief §2.4.4)
+  const games = new Map();
   let latestGameId = null;
   let stressRunning = 0;
 
@@ -86,14 +84,14 @@ function createApp({
       maxAttempts: config.MAX_ATTEMPTS,
     }));
     latestGameId = gameId;
-    // Keep memory bounded: drop the oldest game (Map keeps insertion order).
+    // Keep memory bounded
     if (games.size > MAX_GAMES_IN_MEMORY) games.delete(games.keys().next().value);
     res.json({ gameId, min, max, maxAttempts: config.MAX_ATTEMPTS, attempts: 0 });
   });
 
   app.post('/api/guess', (req, res) => {
     const body = req.body || {};
-    // gameId is optional: the brief's payload is just {"guess": n}, so fall back to the latest game.
+    // gameId is optional
     const gameId = body.gameId || latestGameId;
     const game = gameId && games.get(gameId);
     if (!game) {
@@ -117,7 +115,7 @@ function createApp({
     if (result === RESULT.CORRECT) {
       Object.assign(response, scores.recordWin(next.attempts));
     } else if (next.status === 'lost' && result !== RESULT.GAME_OVER) {
-      response.secret = next.secret; // reveal the number on the losing guess
+      response.secret = next.secret;
     }
     return res.json(response);
   });
@@ -139,7 +137,7 @@ function createApp({
     }
   });
 
-  // GET /stress?seconds=N  (default 10, capped) — burns CPU so Grafana shows a spike.
+  // GET /stress?seconds=N  (default 10, capped)
   app.get('/stress', async (req, res, next) => {
     const requested = req.query.seconds === undefined ? 10 : Number(req.query.seconds);
     if (!Number.isFinite(requested) || requested <= 0) {
@@ -166,7 +164,7 @@ function createApp({
     res.status(404).json({ error: 'Not found' });
   });
 
-  // Error handler (4 args). Malformed JSON bodies arrive here as 400s.
+  // Error handler (4 args)
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
     const status = err.status || err.statusCode || 500;

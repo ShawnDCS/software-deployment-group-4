@@ -1,14 +1,11 @@
 #!/bin/sh
-# 05-monitoring.sh — deploy Prometheus + Grafana + Node Exporter + cAdvisor to VM3 (Level 2).
-# Run from the laptop: sh infra/05-monitoring.sh
-# The Grafana admin password is generated ON VM3 into /opt/monitoring/.env (mode 640, group
-# deploy so the prod deploy script can post Grafana annotations). It is never printed.
+# 05-monitoring.sh: deploy Prometheus, Grafana and exporters to VM3
 set -eu
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 SSHC="$ROOT/infra/ssh_config"
 
 echo "== Copy monitoring/ to VM3:/opt/monitoring"
-# shellcheck disable=SC2016  # $USER expands on VM3
+# shellcheck disable=SC2016
 ssh -F "$SSHC" g4-prod 'sudo install -d -o "$USER" -g "$USER" /opt/monitoring'
 COPYFILE_DISABLE=1 tar --no-xattrs -C "$ROOT/monitoring" --exclude .env -cf - . | ssh -F "$SSHC" g4-prod 'tar -C /opt/monitoring -xf -'
 

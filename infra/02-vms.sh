@@ -1,9 +1,5 @@
 #!/bin/sh
-# 02-vms.sh — creates the three Ubuntu 22.04 VMs with static private IPs.
-#   VM1 Jenkins (public IP + DNS name), VM2 test (NO public IP), VM3 prod (public IP + DNS name)
-# Cost (koreacentral, Linux pay-as-you-go): B2als_v2 $0.0468/h + 2 x B2ats_v2 $0.0117/h = ~$0.07/h
-# while running, plus ~$2.40/month per Standard SSD disk and ~$3.65/month per public IP.
-# Every VM gets a nightly auto-shutdown (deallocate) at $AUTO_SHUTDOWN_UTC UTC to save credit.
+# 02-vms.sh: create the three Ubuntu 22.04 VMs
 set -eu
 # shellcheck source=infra/config.sh
 . "$(dirname "$0")/config.sh"

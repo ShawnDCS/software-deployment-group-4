@@ -1,11 +1,9 @@
 #!/bin/sh
-# lib.sh — shared helpers. Jenkins pipes this file + a deploy script over SSH:
-#   cat deploy/lib.sh deploy/deploy-test.sh | ssh deploy@host sh -s -- ARGS
-# so the target servers never need a copy of the repository.
+# lib.sh: helper functions shared by the deploy scripts
 
 log() { printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
 
-# wait_healthy URL [TRIES] [INTERVAL] — poll URL until it returns "OK" (default 12 x 5 s = 60 s).
+# wait_healthy URL [TRIES] [INTERVAL]
 wait_healthy() {
   url=$1; tries=${2:-12}; interval=${3:-5}; n=1
   while [ "$n" -le "$tries" ]; do
@@ -21,7 +19,7 @@ wait_healthy() {
   return 1
 }
 
-# Remove guessgame images not used by any container (running OR stopped), to save disk.
+# Remove guessgame images not used by any container (running OR stopped), to save disk
 prune_images() {
   docker image prune -af --filter "label=org.opencontainers.image.title=guessgame" >/dev/null 2>&1 || true
 }
@@ -34,13 +32,12 @@ UPSTREAM_TEMPLATE=/etc/nginx/guessgame-upstream.conf.template
 port_of() { if [ "$1" = green ]; then echo 3002; else echo 3001; fi; }
 other_color() { if [ "$1" = blue ]; then echo green; else echo blue; fi; }
 
-# current_color — colour Nginx is serving now (from the state file), or "none" on first deploy.
+# current_color: live colour from the state file
 current_color() {
   if [ -f "$STATE_FILE" ]; then jq -r '.color // "none"' "$STATE_FILE"; else echo none; fi
 }
 
-# switch_upstream COLOR BUILD — rewrite the whole upstream file, test, reload.
-# If the new config fails `nginx -t`, the previous file is restored and Nginx is never reloaded.
+# switch_upstream COLOR BUILD: point Nginx at a colour
 switch_upstream() {
   color=$1; build=$2; port=$(port_of "$color")
   previous=$(cat "$UPSTREAM_FILE")
@@ -64,7 +61,7 @@ write_state() {
   mv "$STATE_FILE.tmp" "$STATE_FILE"
 }
 
-# annotate TEXT TAG... — Grafana annotation (best effort; a Grafana problem never fails a deploy).
+# annotate TEXT TAG...: add a Grafana annotation
 annotate() {
   text=$1; shift
   pw=$(sed -n 's/^GRAFANA_ADMIN_PASSWORD=//p' /opt/monitoring/.env 2>/dev/null || true)

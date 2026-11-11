@@ -1,13 +1,12 @@
 'use strict';
 
-// Prometheus metrics. Each app instance gets its own Registry so tests can create
-// many apps without "metric already registered" errors.
+// Prometheus metrics
 
 const client = require('prom-client');
 
 function createMetrics(buildInfo = {}) {
   const register = new client.Registry();
-  // Default Node.js metrics: CPU, memory, heap (nodejs_heap_size_used_bytes), event loop lag, GC...
+  // Default Node.js metrics
   client.collectDefaultMetrics({ register });
 
   const httpRequestsTotal = new client.Counter({
@@ -25,7 +24,7 @@ function createMetrics(buildInfo = {}) {
     registers: [register],
   });
 
-  // Constant gauge = 1 whose labels say which build is live (Grafana "Live build" panel).
+  // Constant gauge = 1 whose labels say which build is live (Grafana "Live build" panel)
   const appInfo = new client.Gauge({
     name: 'app_info',
     help: 'Build information of the running game',
@@ -39,8 +38,7 @@ function createMetrics(buildInfo = {}) {
     color: String(buildInfo.color || 'unknown'),
   }, 1);
 
-  // Express middleware: time every request and label it by the matched route
-  // (e.g. "/api/guess"), not the raw URL, so random paths can't explode label cardinality.
+  // Express middleware
   function middleware(req, res, next) {
     const end = httpRequestDuration.startTimer();
     res.on('finish', () => {

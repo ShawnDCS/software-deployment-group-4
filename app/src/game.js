@@ -1,7 +1,6 @@
 'use strict';
 
-// Pure game logic: no HTTP, no file I/O, no randomness.
-// The secret number is passed in, which is what makes the tests deterministic.
+// Pure game logic
 
 const RESULT = Object.freeze({
   TOO_HIGH: 'too high',
@@ -17,8 +16,7 @@ function createGame({ secret, min, max, maxAttempts }) {
   return { secret, min, max, maxAttempts, attempts: 0, status: 'playing' };
 }
 
-// Accepts an integer or an integer-looking string ("42").
-// Returns { ok: true, value } or { ok: false, error }.
+// Accepts an integer or an integer-looking string ("42")
 function validateGuess(raw, min, max) {
   let value = raw;
   if (typeof raw === 'string' && /^\s*-?\d+\s*$/.test(raw)) {
@@ -33,9 +31,7 @@ function validateGuess(raw, min, max) {
   return { ok: true, value };
 }
 
-// Returns { game, result } where game is a NEW object (the input is not mutated).
-// A finished game (won or lost) answers every further guess with "game over"
-// and does not count it as an attempt.
+// Returns { game, result } where game is a NEW object (the input is not mutated)
 function applyGuess(game, value) {
   if (game.status !== 'playing') {
     return { game, result: RESULT.GAME_OVER };

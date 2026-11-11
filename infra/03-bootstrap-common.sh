@@ -1,7 +1,5 @@
 #!/bin/sh
-# 03-bootstrap-common.sh — runs ON each VM as root (via `az vm run-command`, see 03-bootstrap.sh).
-# Installs Docker Engine from Docker's apt repo, log rotation, swapfile, timezone, jq.
-# Usage on the VM: sh 03-bootstrap-common.sh <admin-user> <swap-GB>
+# 03-bootstrap-common.sh: Docker, swap and timezone (runs on each VM as root)
 set -eu
 ADMIN_USER=${1:-azureuser}
 SWAP_GB=${2:-2}
@@ -33,7 +31,7 @@ if ! command -v docker >/dev/null 2>&1; then
   apt-get install -y -q docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin >/dev/null
 fi
 
-# Rotate container logs so a chatty container can't fill the 30 GB disk.
+# Rotate container logs so a chatty container can't fill the 30 GB disk
 if [ ! -f /etc/docker/daemon.json ]; then
   printf '{\n  "log-driver": "json-file",\n  "log-opts": { "max-size": "10m", "max-file": "3" }\n}\n' > /etc/docker/daemon.json
   systemctl restart docker
