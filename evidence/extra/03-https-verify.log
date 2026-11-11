@@ -1,0 +1,22 @@
+== https (what browsers try first) — 3 tries
+https 200  tls-ok=0(0=valid)  total 0.305191s
+https 200  tls-ok=0(0=valid)  total 0.322417s
+https 200  tls-ok=0(0=valid)  total 0.324343s
+== old http:// link
+http -> 301 redirect to https://swe40006-g4-game.koreacentral.cloudapp.azure.com/
+== footer over https
+Build #5 Host: prod-green (green) 
+== certificate
+subject=CN=swe40006-g4-game.koreacentral.cloudapp.azure.com
+issuer=C=US, O=Let's Encrypt, CN=YE1
+notAfter=Feb  9 03:58:11 2027 GMT
+== grafana over https
+/grafana/login 200
+== /metrics still private over https
+/metrics 403 (403 expected)
+== internal paths unchanged
+deploy check http://127.0.0.1/ -> 200
+prometheus target cadvisor up
+prometheus target guessgame up
+prometheus target node up
+prometheus target prometheus up

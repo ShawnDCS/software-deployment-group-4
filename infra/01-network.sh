@@ -5,7 +5,7 @@
 # Firewall design:
 #   nsg-vm1-jenkins : 22 from team IPs; 8080 from team IPs + GitHub webhook ranges
 #   nsg-vm2-test    : no internet inbound at all (VM2 has no public IP; Jenkins reaches it privately)
-#   nsg-vm3-prod    : 22 from team IPs; 80 (game) and 3030 (Grafana) from anywhere
+#   nsg-vm3-prod    : 22 from team IPs; 80 + 443 (game, HTTPS) and 3030 (Grafana) from anywhere
 # Traffic inside the VNet is allowed by Azure's default rule, so Jenkins -> VM2/VM3 SSH works.
 set -eu
 # shellcheck source=infra/config.sh
@@ -52,6 +52,7 @@ nsg nsg-vm3-prod
 rule nsg-vm3-prod Allow-SSH-Team           100 22   $TEAM_IPS
 rule nsg-vm3-prod Allow-HTTP-Public        110 80   Internet
 rule nsg-vm3-prod Allow-Grafana-Public     120 3030 Internet
+rule nsg-vm3-prod Allow-HTTPS-Public       130 443  Internet
 
 echo "== Summary"
 az network nsg list -g "$RESOURCE_GROUP" --query "[].{nsg:name, rules:length(securityRules)}" -o table

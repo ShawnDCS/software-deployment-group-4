@@ -1,0 +1,12 @@
+== 1. NSG: allow 443 to VM3
+Allow-HTTPS-Public	443	Internet
+== 2. Nginx base config
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+nginx 1.30.6 running; upstream: server 127.0.0.1:3002
+== 3. Certificate for swe40006-g4-game.koreacentral.cloudapp.azure.com
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/swe40006-g4-game.koreacentral.cloudapp.azure.com/fullchain.pem
+This certificate expires on 2027-02-09.
+== 4. HTTPS server block
+nginx: configuration file /etc/nginx/nginx.conf test failed
+nginx: [emerg] could not build server_names_hash, you should increase server_names_hash_bucket_size: 64

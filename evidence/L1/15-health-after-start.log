@@ -1,0 +1,22 @@
+== VM1
+jenkins	Up 54 seconds
+== VM2
+Warning: Permanently added '10.40.1.20' (ED25519) to the list of known hosts.
+guessgame-test	Up About a minute (healthy)
+== VM3
+guessgame-blue	Up About a minute (healthy)
+grafana	Up About a minute
+cadvisor	Up About a minute (healthy)
+prometheus	Up About a minute
+node-exporter	Up About a minute
+active
+{"color":"blue","build":"4","commit":"04e698e","deployed_at":"2026-11-10T08:38:29Z","previous_color":"green","previous_build":"3"}
+== public
+game        200
+v1.0</span>·<span>Build #4 Host: prod-blue (blue) 
+grafana     200
+jenkins     200
+target cadvisor up
+target guessgame up
+target node up
+target prometheus up

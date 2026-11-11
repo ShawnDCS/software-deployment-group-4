@@ -1,0 +1,5 @@
+Name         Power       PublicIp        Fqdn
+-----------  ----------  --------------  ---------------------------------------------------
+vm1-jenkins  VM running  20.41.96.186    swe40006-g4-jenkins.koreacentral.cloudapp.azure.com
+vm2-test     VM running
+vm3-prod     VM running  20.196.215.177  swe40006-g4-game.koreacentral.cloudapp.azure.com

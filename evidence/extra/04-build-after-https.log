@@ -1,0 +1,358 @@
+[2026-11-11T05:56:52.252Z] Started by user admin
+[2026-11-11T05:56:53.176Z] Obtained Jenkinsfile from git https://github.com/ShawnDCS/software-deployment-group-4.git
+[2026-11-11T05:56:55.422Z] [Pipeline] Start of Pipeline
+[2026-11-11T05:56:57.173Z] [Pipeline] node
+[2026-11-11T05:56:57.233Z] Running on Jenkins in /var/jenkins_home/workspace/guessgame
+[2026-11-11T05:56:57.587Z] [Pipeline] {
+[2026-11-11T05:56:57.765Z] [Pipeline] withEnv
+[2026-11-11T05:56:57.775Z] [Pipeline] {
+[2026-11-11T05:56:57.847Z] [Pipeline] timestamps
+[2026-11-11T05:56:57.848Z] The timestamps step is unnecessary when timestamps are enabled for all Pipeline builds.
+[2026-11-11T05:56:57.859Z] [Pipeline] {
+[2026-11-11T05:56:57.929Z] [Pipeline] timeout
+[2026-11-11T05:56:57.933Z] Timeout set to expire in 20 min
+[2026-11-11T05:56:57.944Z] [Pipeline] {
+[2026-11-11T05:56:58.042Z] [Pipeline] stage
+[2026-11-11T05:56:58.059Z] [Pipeline] { (Checkout)
+[2026-11-11T05:56:58.181Z] [Pipeline] script
+[2026-11-11T05:56:58.211Z] [Pipeline] {
+[2026-11-11T05:56:58.291Z] [Pipeline] checkout
+[2026-11-11T05:56:58.354Z] Selected Git installation does not exist. Using Default
+[2026-11-11T05:56:58.354Z] The recommended git tool is: NONE
+[2026-11-11T05:56:58.354Z] No credentials specified
+[2026-11-11T05:56:58.356Z] Cloning the remote Git repository
+[2026-11-11T05:56:58.357Z] Cloning repository https://github.com/ShawnDCS/software-deployment-group-4.git
+[2026-11-11T05:56:58.358Z]  > git init /var/jenkins_home/workspace/guessgame # timeout=10
+[2026-11-11T05:56:58.368Z] Fetching upstream changes from https://github.com/ShawnDCS/software-deployment-group-4.git
+[2026-11-11T05:56:58.369Z]  > git --version # timeout=10
+[2026-11-11T05:56:58.375Z]  > git --version # 'git version 2.47.3'
+[2026-11-11T05:56:58.375Z]  > git fetch --tags --force --progress -- https://github.com/ShawnDCS/software-deployment-group-4.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2026-11-11T05:56:59.102Z]  > git config remote.origin.url https://github.com/ShawnDCS/software-deployment-group-4.git # timeout=10
+[2026-11-11T05:56:59.109Z]  > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2026-11-11T05:56:59.124Z] Avoid second fetch
+[2026-11-11T05:56:59.128Z]  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+[2026-11-11T05:56:59.137Z] Checking out Revision 3beb658e738d66637c905f93debf24fd6c78f79b (refs/remotes/origin/main)
+[2026-11-11T05:56:59.139Z]  > git config core.sparsecheckout # timeout=10
+[2026-11-11T05:56:59.147Z]  > git checkout -f 3beb658e738d66637c905f93debf24fd6c78f79b # timeout=10
+[2026-11-11T05:56:59.179Z] Commit message: "Merge pull request #4 from ShawnDCS/docs/evidence-final"
+[2026-11-11T05:56:59.181Z]  > git rev-list --no-walk 3beb658e738d66637c905f93debf24fd6c78f79b # timeout=10
+[2026-11-11T05:56:59.264Z] [Pipeline] sh
+[2026-11-11T05:56:59.541Z] + git rev-parse --short HEAD
+[2026-11-11T05:56:59.621Z] [Pipeline] }
+[2026-11-11T05:56:59.681Z] [Pipeline] // script
+[2026-11-11T05:56:59.707Z] [Pipeline] }
+[2026-11-11T05:56:59.757Z] [Pipeline] // stage
+[2026-11-11T05:56:59.802Z] [Pipeline] stage
+[2026-11-11T05:56:59.810Z] [Pipeline] { (Test)
+[2026-11-11T05:57:00.009Z] [Pipeline] getContext
+[2026-11-11T05:57:00.934Z] [Pipeline] isUnix
+[2026-11-11T05:57:00.987Z] [Pipeline] withEnv
+[2026-11-11T05:57:01.003Z] [Pipeline] {
+[2026-11-11T05:57:01.065Z] [Pipeline] sh
+[2026-11-11T05:57:01.343Z] + docker inspect -f . node:22-alpine
+[2026-11-11T05:57:01.343Z] .
+[2026-11-11T05:57:01.369Z] [Pipeline] }
+[2026-11-11T05:57:01.423Z] [Pipeline] // withEnv
+[2026-11-11T05:57:01.474Z] [Pipeline] withDockerContainer
+[2026-11-11T05:57:01.539Z] Jenkins seems to be running inside container 670152547e271774f0969e9b4fe32d015354a42ec72e2f366ab667f6895bf338
+[2026-11-11T05:57:01.582Z] $ docker run -t -d -u 1000:1000 -e HOME=/tmp -w /var/jenkins_home/workspace/guessgame --volumes-from 670152547e271774f0969e9b4fe32d015354a42ec72e2f366ab667f6895bf338 -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:22-alpine cat
+[2026-11-11T05:57:02.130Z] $ docker top 0feae8d10615db9cc5f498cae14ecd3649fe324b21b406bfe24f48390c53a512 -eo pid,comm
+[2026-11-11T05:57:02.198Z] [Pipeline] {
+[2026-11-11T05:57:02.286Z] [Pipeline] dir
+[2026-11-11T05:57:02.286Z] Running in /var/jenkins_home/workspace/guessgame/app
+[2026-11-11T05:57:02.297Z] [Pipeline] {
+[2026-11-11T05:57:02.364Z] [Pipeline] sh
+[2026-11-11T05:57:02.633Z] + npm ci
+[2026-11-11T05:57:06.763Z] npm warn deprecated prom-client@15.1.3: prom-client has been replaced by @prometheus-io/client
+[2026-11-11T05:57:06.763Z] npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+[2026-11-11T05:57:08.626Z] 
+[2026-11-11T05:57:08.626Z] added 367 packages, and audited 368 packages in 6s
+[2026-11-11T05:57:08.626Z] 
+[2026-11-11T05:57:08.626Z] 83 packages are looking for funding
+[2026-11-11T05:57:08.626Z]   run `npm fund` for details
+[2026-11-11T05:57:08.626Z] 
+[2026-11-11T05:57:08.626Z] 19 vulnerabilities (3 low, 16 moderate)
+[2026-11-11T05:57:08.627Z] 
+[2026-11-11T05:57:08.627Z] To address issues that do not require attention, run:
+[2026-11-11T05:57:08.627Z]   npm audit fix
+[2026-11-11T05:57:08.627Z] 
+[2026-11-11T05:57:08.627Z] To address all issues (including breaking changes), run:
+[2026-11-11T05:57:08.627Z]   npm audit fix --force
+[2026-11-11T05:57:08.627Z] 
+[2026-11-11T05:57:08.627Z] Run `npm audit` for details.
+[2026-11-11T05:57:08.672Z] [Pipeline] sh
+[2026-11-11T05:57:08.941Z] + npm test -- --ci
+[2026-11-11T05:57:09.194Z] 
+[2026-11-11T05:57:09.194Z] > guessgame@1.0.0 test
+[2026-11-11T05:57:09.195Z] > jest --ci
+[2026-11-11T05:57:09.195Z] 
+[2026-11-11T05:57:13.320Z] PASS test/api.test.js
+[2026-11-11T05:57:13.320Z] PASS test/unit.test.js
+[2026-11-11T05:57:13.320Z] ---------------|---------|----------|---------|---------|-------------------
+[2026-11-11T05:57:13.320Z] File           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+[2026-11-11T05:57:13.320Z] ---------------|---------|----------|---------|---------|-------------------
+[2026-11-11T05:57:13.320Z] All files      |   98.03 |    93.75 |     100 |   98.65 |                   
+[2026-11-11T05:57:13.320Z]  app.js        |   96.62 |       88 |     100 |   97.64 | 138,159           
+[2026-11-11T05:57:13.320Z]  config.js     |     100 |      100 |     100 |     100 |                   
+[2026-11-11T05:57:13.320Z]  game.js       |     100 |      100 |     100 |     100 |                   
+[2026-11-11T05:57:13.320Z]  metrics.js    |     100 |      100 |     100 |     100 |                   
+[2026-11-11T05:57:13.320Z]  scoreStore.js |     100 |      100 |     100 |     100 |                   
+[2026-11-11T05:57:13.320Z]  stress.js     |     100 |      100 |     100 |     100 |                   
+[2026-11-11T05:57:13.320Z] ---------------|---------|----------|---------|---------|-------------------
+[2026-11-11T05:57:13.320Z] 
+[2026-11-11T05:57:13.320Z] =============================== Coverage summary ===============================
+[2026-11-11T05:57:13.320Z] Statements   : 98.03% ( 150/153 )
+[2026-11-11T05:57:13.320Z] Branches     : 93.75% ( 90/96 )
+[2026-11-11T05:57:13.320Z] Functions    : 100% ( 25/25 )
+[2026-11-11T05:57:13.320Z] Lines        : 98.65% ( 147/149 )
+[2026-11-11T05:57:13.320Z] ================================================================================
+[2026-11-11T05:57:13.320Z] 
+[2026-11-11T05:57:13.320Z] Test Suites: 2 passed, 2 total
+[2026-11-11T05:57:13.320Z] Tests:       35 passed, 35 total
+[2026-11-11T05:57:13.320Z] Snapshots:   0 total
+[2026-11-11T05:57:13.320Z] Time:        3.889 s
+[2026-11-11T05:57:13.320Z] Ran all test suites.
+[2026-11-11T05:57:14.177Z] [Pipeline] }
+[2026-11-11T05:57:14.284Z] [Pipeline] // dir
+[2026-11-11T05:57:14.369Z] Post stage
+[2026-11-11T05:57:14.402Z] [Pipeline] recordCoverage
+[2026-11-11T05:57:14.520Z] [Coverage] Recording coverage results
+[2026-11-11T05:57:14.520Z] [Coverage] Creating parser for Cobertura Coverage Reports
+[2026-11-11T05:57:14.520Z] [Coverage] Searching for all files in '/var/jenkins_home/workspace/guessgame' that match the pattern 'app/coverage/cobertura-coverage.xml'
+[2026-11-11T05:57:14.520Z] [Coverage] Traversing of symbolic links: enabled
+[2026-11-11T05:57:14.520Z] [Coverage] -> found 1 file
+[2026-11-11T05:57:14.521Z] [Coverage] Successfully parsed file '/var/jenkins_home/workspace/guessgame/app/coverage/cobertura-coverage.xml'
+[2026-11-11T05:57:14.521Z] [Coverage] Module Coverage: 100.00% (1/1)
+[2026-11-11T05:57:14.521Z] [Coverage] Package Coverage: 100.00% (1/1)
+[2026-11-11T05:57:14.521Z] [Coverage] File Coverage: 100.00% (6/6)
+[2026-11-11T05:57:14.521Z] [Coverage] Class Coverage: 100.00% (6/6)
+[2026-11-11T05:57:14.521Z] [Coverage] Method Coverage: 100.00% (25/25)
+[2026-11-11T05:57:14.521Z] [Coverage] Line Coverage: 98.66% (147/149)
+[2026-11-11T05:57:14.521Z] [Coverage] Branch Coverage: 91.67% (66/72)
+[2026-11-11T05:57:14.521Z] [Coverage] Lines of Code: 149
+[2026-11-11T05:57:14.521Z] [Coverage] Successfully processed file 'app/coverage/cobertura-coverage.xml'
+[2026-11-11T05:57:14.535Z] [Coverage] Resolving source code files...
+[2026-11-11T05:57:14.535Z] [Coverage] Searching for source code files in:
+[2026-11-11T05:57:14.535Z] [Coverage] -> app
+[2026-11-11T05:57:14.535Z] [Coverage] -> /var/jenkins_home/workspace/guessgame/src/main/java
+[2026-11-11T05:57:14.535Z] [Coverage] -> resolved absolute paths for all 6 source files
+[2026-11-11T05:57:14.535Z] [Coverage] Making paths of 6 source code files relative to workspace root...
+[2026-11-11T05:57:14.813Z] [Checks API] No suitable checks publisher found.
+[2026-11-11T05:57:14.813Z] [Coverage] Obtaining result action of reference build
+[2026-11-11T05:57:14.813Z] [Coverage] Reference build recorder is not configured
+[2026-11-11T05:57:14.813Z] [Coverage] -> Found no reference build
+[2026-11-11T05:57:14.813Z] [Coverage] No quality gates have been set - skipping
+[2026-11-11T05:57:14.813Z] [Coverage] Executing source code painting...
+[2026-11-11T05:57:14.813Z] [Coverage] Painting 6 source files on agent
+[2026-11-11T05:57:14.813Z] [Coverage] -> finished painting successfully
+[2026-11-11T05:57:14.813Z] [Coverage] -> zipping sources from folder '/var/jenkins_home/workspace/guessgame/coverage-sources-.tmp4476245681913206233/coverage' as '/var/jenkins_home/workspace/guessgame/coverage-sources-coverage.zip'
+[2026-11-11T05:57:14.813Z] [Coverage] -> deleted temporary source folder '/var/jenkins_home/workspace/guessgame/coverage-sources-.tmp4476245681913206233'
+[2026-11-11T05:57:14.813Z] [Coverage] Copying painted sources from agent to build folder
+[2026-11-11T05:57:14.813Z] [Coverage] -> extracting...
+[2026-11-11T05:57:14.813Z] [Coverage] -> done
+[2026-11-11T05:57:14.813Z] [Coverage] Deleting source code files of build #5
+[2026-11-11T05:57:14.813Z] [Coverage] Finished coverage processing - adding the action to the build...
+[2026-11-11T05:57:14.846Z] [Pipeline] }
+[2026-11-11T05:57:14.857Z] $ docker stop --time=1 0feae8d10615db9cc5f498cae14ecd3649fe324b21b406bfe24f48390c53a512
+[2026-11-11T05:57:16.709Z] $ docker rm -f --volumes 0feae8d10615db9cc5f498cae14ecd3649fe324b21b406bfe24f48390c53a512
+[2026-11-11T05:57:16.977Z] [Pipeline] // withDockerContainer
+[2026-11-11T05:57:17.005Z] [Pipeline] }
+[2026-11-11T05:57:17.061Z] [Pipeline] // stage
+[2026-11-11T05:57:17.136Z] [Pipeline] stage
+[2026-11-11T05:57:17.155Z] [Pipeline] { (Build)
+[2026-11-11T05:57:17.241Z] [Pipeline] sh
+[2026-11-11T05:57:17.515Z] + docker build --build-arg BUILD_NUMBER=6 --build-arg GIT_COMMIT=3beb658e738d66637c905f93debf24fd6c78f79b -t shawnraj07/guessgame:6 -t shawnraj07/guessgame:3beb658 app/
+[2026-11-11T05:57:17.768Z] #0 building with "default" instance using docker driver
+[2026-11-11T05:57:17.768Z] 
+[2026-11-11T05:57:17.768Z] #1 [internal] load build definition from Dockerfile
+[2026-11-11T05:57:17.768Z] #1 transferring dockerfile: 1.31kB done
+[2026-11-11T05:57:17.768Z] #1 DONE 0.0s
+[2026-11-11T05:57:17.768Z] 
+[2026-11-11T05:57:17.768Z] #2 [internal] load metadata for docker.io/library/node:22-alpine
+[2026-11-11T05:57:17.768Z] #2 DONE 0.1s
+[2026-11-11T05:57:17.768Z] 
+[2026-11-11T05:57:17.768Z] #3 [internal] load .dockerignore
+[2026-11-11T05:57:17.768Z] #3 transferring context: 123B done
+[2026-11-11T05:57:17.768Z] #3 DONE 0.0s
+[2026-11-11T05:57:17.768Z] 
+[2026-11-11T05:57:17.768Z] #4 [internal] load build context
+[2026-11-11T05:57:17.768Z] #4 DONE 0.0s
+[2026-11-11T05:57:17.768Z] 
+[2026-11-11T05:57:17.768Z] #5 [1/8] FROM docker.io/library/node:22-alpine@sha256:0e1754758c2df4cfa3e68d59e2e1b7374bb7fd9ea6328eaaacf15cc934af8202
+[2026-11-11T05:57:17.768Z] #5 resolve docker.io/library/node:22-alpine@sha256:0e1754758c2df4cfa3e68d59e2e1b7374bb7fd9ea6328eaaacf15cc934af8202 0.1s done
+[2026-11-11T05:57:18.018Z] #5 DONE 0.1s
+[2026-11-11T05:57:18.018Z] 
+[2026-11-11T05:57:18.018Z] #4 [internal] load build context
+[2026-11-11T05:57:18.018Z] #4 transferring context: 218.13kB 0.0s done
+[2026-11-11T05:57:18.019Z] #4 DONE 0.0s
+[2026-11-11T05:57:18.019Z] 
+[2026-11-11T05:57:18.019Z] #6 [5/8] RUN npm ci --omit=dev && npm cache clean --force
+[2026-11-11T05:57:18.019Z] #6 CACHED
+[2026-11-11T05:57:18.019Z] 
+[2026-11-11T05:57:18.019Z] #7 [4/8] COPY package.json package-lock.json ./
+[2026-11-11T05:57:18.019Z] #7 CACHED
+[2026-11-11T05:57:18.019Z] 
+[2026-11-11T05:57:18.019Z] #8 [6/8] COPY healthcheck.js ./
+[2026-11-11T05:57:18.019Z] #8 CACHED
+[2026-11-11T05:57:18.019Z] 
+[2026-11-11T05:57:18.019Z] #9 [3/8] RUN addgroup -S -g 1001 appuser && adduser -S -u 1001 -G appuser appuser
+[2026-11-11T05:57:18.019Z] #9 CACHED
+[2026-11-11T05:57:18.019Z] 
+[2026-11-11T05:57:18.019Z] #10 [2/8] WORKDIR /app
+[2026-11-11T05:57:18.019Z] #10 CACHED
+[2026-11-11T05:57:18.019Z] 
+[2026-11-11T05:57:18.019Z] #11 [7/8] COPY src ./src
+[2026-11-11T05:57:18.019Z] #11 CACHED
+[2026-11-11T05:57:18.019Z] 
+[2026-11-11T05:57:18.019Z] #12 [8/8] RUN mkdir -p /app/data && chown appuser:appuser /app/data
+[2026-11-11T05:57:18.019Z] #12 CACHED
+[2026-11-11T05:57:18.019Z] 
+[2026-11-11T05:57:18.019Z] #13 exporting to image
+[2026-11-11T05:57:18.019Z] #13 exporting layers done
+[2026-11-11T05:57:18.019Z] #13 exporting manifest sha256:b035707faf8e05cf9383aaf4c6e5c4a185e8dcb0736ebb2154ef639e0ed7be9b 0.0s done
+[2026-11-11T05:57:18.019Z] #13 exporting config sha256:7a7ed1bd22b1d88ce57426373aa60dd9401afc167e3f22e401b18349d11936da 0.0s done
+[2026-11-11T05:57:18.019Z] #13 exporting attestation manifest sha256:9482679ce6ccfcd7bcb71a0db4c1f51b50156fb7bfb7e5a5a22bca5f0e9752ee 0.0s done
+[2026-11-11T05:57:18.019Z] #13 exporting manifest list sha256:35155407a894274d0075d42c533a20bdae23082798146ca79e04f65ed38ecfb7 0.1s done
+[2026-11-11T05:57:18.019Z] #13 naming to docker.io/shawnraj07/guessgame:6
+[2026-11-11T05:57:18.269Z] #13 naming to docker.io/shawnraj07/guessgame:6 done
+[2026-11-11T05:57:18.269Z] #13 unpacking to docker.io/shawnraj07/guessgame:6 0.1s done
+[2026-11-11T05:57:18.522Z] #13 naming to docker.io/shawnraj07/guessgame:3beb658 0.0s done
+[2026-11-11T05:57:18.522Z] #13 unpacking to docker.io/shawnraj07/guessgame:3beb658 0.0s done
+[2026-11-11T05:57:18.522Z] #13 DONE 0.5s
+[2026-11-11T05:57:18.553Z] [Pipeline] }
+[2026-11-11T05:57:18.602Z] [Pipeline] // stage
+[2026-11-11T05:57:18.685Z] [Pipeline] stage
+[2026-11-11T05:57:18.695Z] [Pipeline] { (Push)
+[2026-11-11T05:57:18.777Z] [Pipeline] withCredentials
+[2026-11-11T05:57:18.848Z] Masking supported pattern matches of $DH_TOKEN
+[2026-11-11T05:57:18.868Z] [Pipeline] {
+[2026-11-11T05:57:18.909Z] [Pipeline] sh
+[2026-11-11T05:57:19.176Z] + docker login -u shawnraj07 --password-stdin
+[2026-11-11T05:57:19.176Z] + echo ****
+[2026-11-11T05:57:20.520Z] 
+[2026-11-11T05:57:20.520Z] WARNING! Your credentials are stored unencrypted in '/var/jenkins_home/.docker/config.json'.
+[2026-11-11T05:57:20.520Z] Configure a credential helper to remove this warning. See
+[2026-11-11T05:57:20.520Z] https://docs.docker.com/go/credential-store/
+[2026-11-11T05:57:20.520Z] 
+[2026-11-11T05:57:20.520Z] Login Succeeded
+[2026-11-11T05:57:20.520Z] + docker push -q shawnraj07/guessgame:6
+[2026-11-11T05:57:25.716Z] docker.io/shawnraj07/guessgame:6
+[2026-11-11T05:57:25.716Z] + docker push -q shawnraj07/guessgame:3beb658
+[2026-11-11T05:57:29.840Z] docker.io/shawnraj07/guessgame:3beb658
+[2026-11-11T05:57:29.876Z] [Pipeline] }
+[2026-11-11T05:57:29.926Z] [Pipeline] // withCredentials
+[2026-11-11T05:57:29.939Z] Post stage
+[2026-11-11T05:57:29.959Z] [Pipeline] sh
+[2026-11-11T05:57:30.224Z] + docker logout
+[2026-11-11T05:57:30.262Z] [Pipeline] }
+[2026-11-11T05:57:30.305Z] [Pipeline] // stage
+[2026-11-11T05:57:30.343Z] [Pipeline] stage
+[2026-11-11T05:57:30.353Z] [Pipeline] { (Deploy Test)
+[2026-11-11T05:57:30.438Z] [Pipeline] sshagent
+[2026-11-11T05:57:30.489Z] [ssh-agent] Using credentials deploy (SSH key Jenkins uses to log in as deploy@VM2/VM3)
+[2026-11-11T05:57:30.490Z] $ ssh-agent
+[2026-11-11T05:57:30.497Z] SSH_AUTH_SOCK=/tmp/ssh-cAJ4C2Nm0Tok/agent.1493
+[2026-11-11T05:57:30.497Z] SSH_AGENT_PID=1497
+[2026-11-11T05:57:30.498Z] Running ssh-add (command line suppressed)
+[2026-11-11T05:57:30.507Z] [ssh-agent] Started.
+[2026-11-11T05:57:30.519Z] [Pipeline] {
+[2026-11-11T05:57:30.553Z] [Pipeline] sh
+[2026-11-11T05:57:30.818Z] + cat deploy/lib.sh deploy/deploy-test.sh
+[2026-11-11T05:57:30.818Z] + ssh deploy@10.40.1.20 sh -s -- shawnraj07/guessgame:6
+[2026-11-11T05:57:31.369Z] [13:57:31] Deploying shawnraj07/guessgame:6 to vm2-test
+[2026-11-11T05:57:35.493Z] docker.io/shawnraj07/guessgame:6
+[2026-11-11T05:57:36.044Z] [13:57:36] Waiting for http://127.0.0.1:3000/health (1/12)
+[2026-11-11T05:57:41.240Z] [13:57:41] Health check passed (http://127.0.0.1:3000/health, attempt 2/12)
+[2026-11-11T05:57:41.240Z] [13:57:41] Test deploy OK: shawnraj07/guessgame:6 Up 5 seconds (healthy)
+[2026-11-11T05:57:41.266Z] [Pipeline] }
+[2026-11-11T05:57:41.268Z] $ ssh-agent -k
+[2026-11-11T05:57:41.276Z] unset SSH_AUTH_SOCK;
+[2026-11-11T05:57:41.276Z] unset SSH_AGENT_PID;
+[2026-11-11T05:57:41.276Z] echo Agent pid 1497 killed;
+[2026-11-11T05:57:41.276Z] [ssh-agent] Stopped.
+[2026-11-11T05:57:41.312Z] [Pipeline] // sshagent
+[2026-11-11T05:57:41.339Z] [Pipeline] }
+[2026-11-11T05:57:41.391Z] [Pipeline] // stage
+[2026-11-11T05:57:41.432Z] [Pipeline] stage
+[2026-11-11T05:57:41.443Z] [Pipeline] { (Smoke Test)
+[2026-11-11T05:57:41.497Z] [Pipeline] sh
+[2026-11-11T05:57:41.769Z] + sh deploy/smoke-test.sh http://10.40.1.20:3000 6 full
+[2026-11-11T05:57:41.770Z] Smoke test: http://10.40.1.20:3000 (expect build #6, mode=full)
+[2026-11-11T05:57:41.770Z]   PASS  GET /health = OK
+[2026-11-11T05:57:41.770Z]   PASS  footer shows Build #6
+[2026-11-11T05:57:41.770Z]   PASS  page says 'Guess a number between 1 and 100'
+[2026-11-11T05:57:41.770Z]   PASS  POST /api/new -> gameId 14afb83a-a488-4619-ae50-32612df0ceea (range 1-100)
+[2026-11-11T05:57:41.770Z]   PASS  out-of-range guess -> 400
+[2026-11-11T05:57:41.770Z]   PASS  won a game in 4 guesses (binary search)
+[2026-11-11T05:57:41.770Z]   PASS  GET /api/score -> {"bestScore":4}
+[2026-11-11T05:57:41.770Z] SMOKE TEST PASSED
+[2026-11-11T05:57:41.797Z] [Pipeline] }
+[2026-11-11T05:57:41.843Z] [Pipeline] // stage
+[2026-11-11T05:57:41.891Z] [Pipeline] stage
+[2026-11-11T05:57:41.903Z] [Pipeline] { (Deploy Prod)
+[2026-11-11T05:57:41.987Z] [Pipeline] sshagent
+[2026-11-11T05:57:42.003Z] [ssh-agent] Using credentials deploy (SSH key Jenkins uses to log in as deploy@VM2/VM3)
+[2026-11-11T05:57:42.003Z] $ ssh-agent
+[2026-11-11T05:57:42.011Z] SSH_AUTH_SOCK=/tmp/ssh-xnWWCjdEiMyD/agent.1582
+[2026-11-11T05:57:42.011Z] SSH_AGENT_PID=1586
+[2026-11-11T05:57:42.011Z] Running ssh-add (command line suppressed)
+[2026-11-11T05:57:42.022Z] [ssh-agent] Started.
+[2026-11-11T05:57:42.037Z] [Pipeline] {
+[2026-11-11T05:57:42.080Z] [Pipeline] sh
+[2026-11-11T05:57:42.348Z] + ssh deploy@10.40.1.30 sh -s+  -- shawnraj07/guessgame:6 6 3beb658
+[2026-11-11T05:57:42.348Z] cat deploy/lib.sh deploy/deploy-prod.sh
+[2026-11-11T05:57:44.210Z] [13:57:43] Live colour: green (build 5). Starting blue container with build 6...
+[2026-11-11T05:57:47.439Z] docker.io/shawnraj07/guessgame:6
+[2026-11-11T05:57:48.782Z] [13:57:48] Waiting for http://127.0.0.1:3001/health (1/12)
+[2026-11-11T05:57:55.265Z] [13:57:54] Health check passed (http://127.0.0.1:3001/health, attempt 2/12)
+[2026-11-11T05:57:55.265Z] [13:57:54] Switching Nginx to blue (127.0.0.1:3001)... Reload complete.
+[2026-11-11T05:58:00.460Z] [13:57:59] Grafana annotation added: Deployed build 6 (3beb658) to blue
+[2026-11-11T05:58:00.460Z] [13:57:59] Production now on blue: {"color":"blue","build":"6","commit":"3beb658","deployed_at":"2026-11-11T05:57:55Z","previous_color":"green","previous_build":"5"}
+[2026-11-11T05:58:00.460Z] [13:57:59] Draining green for 60s before stopping it (kept for instant rollback)
+[2026-11-11T05:59:07.966Z] [13:59:00] Stopped guessgame-green
+[2026-11-11T05:59:07.989Z] [Pipeline] }
+[2026-11-11T05:59:07.990Z] $ ssh-agent -k
+[2026-11-11T05:59:08.001Z] unset SSH_AUTH_SOCK;
+[2026-11-11T05:59:08.001Z] unset SSH_AGENT_PID;
+[2026-11-11T05:59:08.001Z] echo Agent pid 1586 killed;
+[2026-11-11T05:59:08.002Z] [ssh-agent] Stopped.
+[2026-11-11T05:59:08.033Z] [Pipeline] // sshagent
+[2026-11-11T05:59:08.057Z] [Pipeline] }
+[2026-11-11T05:59:08.099Z] [Pipeline] // stage
+[2026-11-11T05:59:08.137Z] [Pipeline] stage
+[2026-11-11T05:59:08.152Z] [Pipeline] { (Verify)
+[2026-11-11T05:59:08.205Z] [Pipeline] sh
+[2026-11-11T05:59:08.470Z] + sh deploy/smoke-test.sh https://swe40006-g4-game.koreacentral.cloudapp.azure.com 6 readonly
+[2026-11-11T05:59:08.471Z] Smoke test: https://swe40006-g4-game.koreacentral.cloudapp.azure.com (expect build #6, mode=readonly)
+[2026-11-11T05:59:08.471Z]   PASS  GET /health = OK
+[2026-11-11T05:59:08.471Z]   PASS  footer shows Build #6
+[2026-11-11T05:59:08.471Z]   PASS  page says 'Guess a number between 1 and 100'
+[2026-11-11T05:59:08.471Z]   PASS  POST /api/new -> gameId 83ffae23-e3a1-4dd5-b5a0-229b97876500 (range 1-100)
+[2026-11-11T05:59:08.471Z]   PASS  out-of-range guess -> 400
+[2026-11-11T05:59:08.722Z]   PASS  GET /api/score -> {"bestScore":6}
+[2026-11-11T05:59:08.722Z] SMOKE TEST PASSED
+[2026-11-11T05:59:08.746Z] [Pipeline] }
+[2026-11-11T05:59:08.787Z] [Pipeline] // stage
+[2026-11-11T05:59:08.848Z] [Pipeline] stage
+[2026-11-11T05:59:08.859Z] [Pipeline] { (Declarative: Post Actions)
+[2026-11-11T05:59:08.918Z] [Pipeline] sh
+[2026-11-11T05:59:09.181Z] + docker image rm shawnraj07/guessgame:6 shawnraj07/guessgame:3beb658
+[2026-11-11T05:59:09.217Z] [Pipeline] cleanWs
+[2026-11-11T05:59:09.239Z] [WS-CLEANUP] Deleting project workspace...
+[2026-11-11T05:59:09.252Z] [WS-CLEANUP] Deferred wipeout is used...
+[2026-11-11T05:59:09.293Z] [WS-CLEANUP] done
+[2026-11-11T05:59:09.368Z] [Pipeline] echo
+[2026-11-11T05:59:09.386Z] Live: https://swe40006-g4-game.koreacentral.cloudapp.azure.com (build #6, commit 3beb658)
+[2026-11-11T05:59:09.448Z] [Pipeline] }
+[2026-11-11T05:59:09.528Z] [Pipeline] // stage
+[2026-11-11T05:59:09.570Z] [Pipeline] }
+[2026-11-11T05:59:09.643Z] [Pipeline] // timeout
+[2026-11-11T05:59:09.684Z] [Pipeline] }
+[2026-11-11T05:59:09.766Z] [Pipeline] // timestamps
+[2026-11-11T05:59:09.804Z] [Pipeline] }
+[2026-11-11T05:59:09.873Z] [Pipeline] // withEnv
+[2026-11-11T05:59:09.905Z] [Pipeline] }
+[2026-11-11T05:59:09.995Z] [Pipeline] // node
+[2026-11-11T05:59:10.034Z] [Pipeline] End of Pipeline
+[2026-11-11T05:59:10.520Z] Finished: SUCCESS
+BUILD #6 RESULT: SUCCESS

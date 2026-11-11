@@ -26,4 +26,5 @@ Never use `latest` — every image/package below is pinned.
 | Grafana | `grafana/grafana:13.2.5` (13.3.0 was a fresh .0 release) |
 | Node Exporter | `prom/node-exporter:v1.12.1` |
 | cAdvisor | `ghcr.io/google/cadvisor:v0.60.6` (images moved from gcr.io to ghcr.io) |
+| certbot | snap (classic), Let's Encrypt cert for the prod FQDN, auto-renew timer |
 | Nginx | 1.30.6 from the nginx.org stable apt repo, `apt-mark hold` (Ubuntu's own package is 1.18) |
