@@ -27,3 +27,12 @@ Unresolved problems stay here with status **OPEN** — the report must include t
 | 20 | 2026-11-10 | 5 | The first manual blue-green run (464 requests, 0 failed) printed fine but its evidence log was not saved because `evidence/L5/` did not exist yet when `tee` ran. | — | Created the folder; the zero-downtime test is repeated during the automated L4/L5 deploy and saved there. **Resolved.** |
 | 21 | 2026-11-10 | 5 | The deliberately broken test image crashed with `/bin/sh: [node,: not found` instead of the intended message (quoting slip made CMD shell-form). | — | Still a build that crashes on start, so the rollback test is valid: 12 failed health checks, new container removed, Nginx untouched, prod stayed on build 3. Logged for honesty. |
 | 22 | 2026-11-10 | 5 | After the broken-build test, the old blue container was gone (the failed deploy reused the blue slot), so a manual `rollback.sh` had nothing to return to until the next good deploy. | — | By design: only a stopped, *healthy previous* release is kept. `rollback.sh` checks the container exists and refuses otherwise. |
+| 23 | 2026-11-10 | 5 | Stopping the background zero-downtime loop with `pkill -f zero-downtime` killed the SSH session that ran the pkill (its own command line matched the pattern), so the totals weren't printed. | Re-read the log file in a separate SSH call. | Let the loop run to its 20-minute end instead. Result unaffected: 1,200+ requests, 0 failed. **Resolved.** |
+
+## Open items for the report
+
+- **#3** prom-client deprecated in favour of `@prometheus-io/client` (pre-1.0) — migrate later.
+- **#9** Prod VM has 1 GB RAM (cost choice). Watch the Grafana *Memory*/*Swap used* panels; resize if it swaps heavily.
+- **#11** VM2 relies on subnet default outbound access, which Microsoft is phasing out; a NAT gateway (~$32/month) is the long-term fix.
+- No HTTPS: the game, Grafana and Jenkins are plain HTTP (no domain/certificate in scope). Jenkins and SSH are restricted to team IPs by NSG.
+- Branch protection lets the admin push to `main` directly (needed for the brief's L4 demo); other members must use PRs.

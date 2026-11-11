@@ -1,0 +1,10 @@
+== push -> live timing (build #4)
+PR #3 merged (push to main): 2026-11-10T08:35:17Z
+Jenkins build started:       2026-11-10T08:35:25.927Z
+Nginx switched to build 4:   2026-11-10T08:36:20Z (16:36:20 MYT)
+Pipeline finished:           2026-11-10T08:37:31.661Z
+=> push to live: 63 s; push to pipeline finished incl. 60 s drain: see above
+
+== zero-downtime loop on VM1 during the automatic blue-green deploy
+16:35:52 progress ok=300 failed=0
+16:36:57 progress ok=600 failed=0
