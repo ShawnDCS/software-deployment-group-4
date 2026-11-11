@@ -33,9 +33,9 @@ services:
       GF_ANALYTICS_REPORTING_ENABLED: "false"
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
       GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/production.json
-      # Also served by Nginx at http://<prod>/grafana/ (port 80), see nginx/guessgame.conf
+      # Also served by Nginx at https://<prod>/grafana/, see nginx/guessgame.conf
       GF_SERVER_DOMAIN: ${GRAFANA_DOMAIN:-swe40006-g4-game.koreacentral.cloudapp.azure.com}
-      GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s/grafana/"
+      GF_SERVER_ROOT_URL: "https://%(domain)s/grafana/"
       GF_SERVER_SERVE_FROM_SUB_PATH: "true"
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning:ro

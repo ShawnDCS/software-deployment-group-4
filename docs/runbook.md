@@ -7,8 +7,8 @@ SSH shortcuts: `ssh -F infra/ssh_config g4-jenkins | g4-prod | g4-test` (g4-test
 
 | What | URL / address |
 |---|---|
-| Game (production) | http://swe40006-g4-game.koreacentral.cloudapp.azure.com |
-| Grafana | http://swe40006-g4-game.koreacentral.cloudapp.azure.com/grafana/ (also `:3030/grafana/`) |
+| Game (production) | https://swe40006-g4-game.koreacentral.cloudapp.azure.com |
+| Grafana | https://swe40006-g4-game.koreacentral.cloudapp.azure.com/grafana/ (also `:3030/grafana/`) |
 | Jenkins | http://swe40006-g4-jenkins.koreacentral.cloudapp.azure.com:8080 (team IPs only) |
 | GitHub | https://github.com/ShawnDCS/software-deployment-group-4 |
 | Docker Hub | https://hub.docker.com/r/shawnraj07/guessgame |

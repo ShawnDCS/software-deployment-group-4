@@ -23,6 +23,8 @@ if ! dpkg -s nginx 2>/dev/null | grep -q "Version: $NGINX_VERSION"; then
 fi
 
 rm -f /etc/nginx/conf.d/default.conf
+install -d /etc/nginx/snippets /var/www/certbot
+install -m 644 /tmp/nginx-src/guessgame-locations.conf /etc/nginx/snippets/guessgame-locations.conf
 install -m 644 /tmp/nginx-src/guessgame.conf /etc/nginx/conf.d/guessgame.conf
 install -m 644 /tmp/nginx-src/guessgame-upstream.conf.template /etc/nginx/guessgame-upstream.conf.template
 # Initial upstream: blue (port 3001). Only created if no deploy has written one yet.
