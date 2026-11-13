@@ -18,7 +18,7 @@ describe('game.js', () => {
   });
 
   test('validateGuess', () => {
-    expect(validateGuess(3, 1, 10)).toEqual({ ok: true, value: 4 });
+    expect(validateGuess(3, 1, 10)).toEqual({ ok: true, value: 3 });
     expect(validateGuess(' 7 ', 1, 10)).toEqual({ ok: true, value: 7 });
     expect(validateGuess(11, 1, 10).ok).toBe(false);
     expect(validateGuess('7a', 1, 10).ok).toBe(false);

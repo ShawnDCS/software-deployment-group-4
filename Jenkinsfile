@@ -88,10 +88,27 @@ pipeline {
       }
     }
 
-    stage('Smoke Test') {
+   /* stage('Smoke Test') {
       steps {
         // Plays a real game against the test server
         sh 'sh deploy/smoke-test.sh "http://$TEST_HOST:3000" "$BUILD_NUMBER" full'
+      }
+    }
+*/
+
+stage('Smoke Test') {
+      steps {
+        // Plays a real game against the test server
+        sh 'sh deploy/smoke-test.sh "http://$TEST_HOST:3000" "$BUILD_NUMBER" full'
+      }
+    }
+
+    stage('Approve Prod') {
+      // Manual gate: a person must approve before production changes
+      steps {
+        timeout(time: 10, unit: 'MINUTES') {
+          input message: "Build #${env.BUILD_NUMBER} passed on the test server. Deploy to production?", ok: 'Deploy'
+        }
       }
     }
 
